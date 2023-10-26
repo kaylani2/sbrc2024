@@ -15,3 +15,8 @@ pyenv global 3.8.3
 python -m test
 #pyenv global system ### K: Revert to global installation.
 #python -V
+
+
+pyenv virtualenv 3.8.3 mestrado
+echo 'Run in the repository directory: "pyenv local mestrado"'
+echo 'Proceed with the installation: "pip install -r requirements"'
