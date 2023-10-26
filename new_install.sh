@@ -10,5 +10,8 @@ exec "$SHELL"
 #pyenv install --list
 pyenv install 3.8.3
 pyenv versions
+ls ~/.pyenv/versions/
 pyenv global 3.8.3
-python
+python -m test
+#pyenv global system ### K: Revert to global installation.
+#python -V
