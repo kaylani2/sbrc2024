@@ -20,3 +20,4 @@ python -m test
 pyenv virtualenv 3.8.3 mestrado
 echo 'Run in the repository directory: "pyenv local mestrado"'
 echo 'Proceed with the installation: "pip install -r requirements"'
+echo 'Run the Flower base script to verify if the installation was successful'
