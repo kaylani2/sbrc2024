@@ -24,7 +24,8 @@ try:
   model = load_model ('mobilenetv2_mnist.keras')
 except:
   model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
-model.compile ("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
+optmizer = Adam(learning_rate = 1e-4)
+model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 history = model.fit (x_train, y_train, epochs=25, batch_size=64, validation_split=0.2, verbose=2, workers=1, use_multiprocessing=True)
 model.save('mobilenetv2_mnist.keras')
 
