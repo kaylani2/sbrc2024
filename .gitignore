@@ -164,3 +164,7 @@ cython_debug/
 
 # General
 *.pdf
+
+# Keras models
+*.h5
+*.keras
