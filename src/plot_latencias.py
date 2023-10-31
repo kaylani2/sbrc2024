@@ -33,8 +33,9 @@ for rodada in range (RODADAS):
 plt.plot(x, y, 'b-', markersize=6, label='Latência convencional')
 
 
-plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
-           ncol=2, mode="expand", borderaxespad=0.)
+plt.legend (loc='upper center', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
+#plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+           #ncol=2, mode="expand", borderaxespad=0.)
 #plt.legend(loc='upper center', bbox_to_anchor=(1, 1))
 plt.xlabel ('Rodada')
 plt.ylabel ('Latência total em segundos')
