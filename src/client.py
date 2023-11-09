@@ -1,5 +1,9 @@
 import flwr as fl
 import tensorflow as tf
+from sys import argv
+
+### TODO: Add argv checks
+### TODO: Add command line arguments to configure the clients
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
