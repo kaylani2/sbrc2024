@@ -4,9 +4,9 @@ from typing import Dict
 ### Setup logging.
 fl.common.logger.configure(identifier="mestrado", filename="server_main.log")
 
-NUM_ROUNDS=2
-MIN_FIT_CLIENTS=2
-MIN_AVAILABLE_CLIENTS=2
+NUM_ROUNDS=50
+MIN_FIT_CLIENTS=5
+MIN_AVAILABLE_CLIENTS=5
 FRACTION_FIT=1.0
 ROUND_TIMEOUT=None
 SERVER_ADDRESS="0.0.0.0:8080"

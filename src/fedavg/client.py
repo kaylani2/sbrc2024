@@ -7,7 +7,7 @@ from logging import INFO, DEBUG
 from flwr.common.logger import log
 
 LEARNING_RATE=1e-2
-NUM_EPOCHS=10
+NUM_EPOCHS=1
 BATCH_SIZE=64
 METRICS = ["accuracy"]
 VERBOSE=2
@@ -19,12 +19,6 @@ fl.common.logger.configure(identifier="mestrado", filename=log_file)
 
 ### Load data
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-#x_train = x_train [0:2048]
-#y_train = y_train [0:2048]
-
-### Filter data
-#train_mask_0_1 = np.isin(y_train, [0, 1]) ### TODO: receive by argv on non-IID configuration
-#x_train, y_train = x_train [train_mask_0_1], y_train [train_mask_0_1]
 
 ### Resize data
 x_train = np.expand_dims(x_train, axis=-1)
