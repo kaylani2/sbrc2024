@@ -1,12 +1,21 @@
 import flwr as fl
+import sys
 from typing import Dict
+from sys import argv
+
+
+if len(sys.argv) > 1:
+  num_clients = int(argv[1])
+else:
+  print ("Usage: python server.py num_clients")
+  sys.exit()
 
 ### Setup logging.
 fl.common.logger.configure(identifier="mestrado", filename="server_main.log")
 
 NUM_ROUNDS=50
-MIN_FIT_CLIENTS=5
-MIN_AVAILABLE_CLIENTS=5
+MIN_FIT_CLIENTS=num_clients
+MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
 ROUND_TIMEOUT=None
 SERVER_ADDRESS="0.0.0.0:8080"

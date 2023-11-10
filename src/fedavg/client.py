@@ -1,17 +1,27 @@
 import flwr as fl
 import tensorflow as tf
 import numpy as np
+import sys
 from keras.optimizers import Adam
 from sys import argv
 from logging import INFO, DEBUG
 from flwr.common.logger import log
+
+
+if len(sys.argv) > 2:
+  num_clients = int(argv[1])
+  client_index = int(argv[2])
+  print("num_clients:", num_clients)
+  print("client_index:", client_index)
+else:
+  print ("Usage: python client.py num_clients client_index")
+  sys.exit()
 
 LEARNING_RATE=1e-2
 NUM_EPOCHS=1
 BATCH_SIZE=64
 METRICS = ["accuracy"]
 VERBOSE=2
-client_index = argv[1]
 
 ### Setup logging
 log_file = "client_main_"+str(client_index)+".log"
@@ -19,6 +29,13 @@ fl.common.logger.configure(identifier="mestrado", filename=log_file)
 
 ### Load data
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+
+### Split data (clients must not have the same samples)
+subset_size = len(x_train) // num_clients
+x = [x_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
+y = [y_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
+x_train = x[client_index-1] ### Each client receive data related to its index
+y_train = y[client_index-1]
 
 ### Resize data
 x_train = np.expand_dims(x_train, axis=-1)

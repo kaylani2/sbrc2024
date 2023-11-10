@@ -1,7 +1,7 @@
 #!/bin/bash
 
-python server.py > server.log 2>&1 &
-for i in {1..5} # define number of clients here
+python server.py 3 > server.log 2>&1 &
+for i in {1..3} # define number of clients here
 do
-  python client.py $i > client$i.log 2>&1 &
+  python client.py 3 $i > client$i.log 2>&1 &
 done
