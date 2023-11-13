@@ -22,10 +22,11 @@ NUM_EPOCHS=1
 BATCH_SIZE=64
 METRICS = ["accuracy"]
 VERBOSE=2
+current_round=0
 
 ### Setup logging
-log_file = "client_main_"+str(client_index)+".log"
-fl.common.logger.configure(identifier="mestrado", filename=log_file)
+filename = "client_main_"+str(client_index).zfill(len(str(num_clients)))+"_"+str(num_clients)+"_clients.log"
+fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Load data
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
@@ -36,6 +37,8 @@ x = [x_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
 y = [y_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
 x_train = x[client_index-1] ### Each client receive data related to its index
 y_train = y[client_index-1]
+del x
+del y
 
 ### Resize data
 x_train = np.expand_dims(x_train, axis=-1)
@@ -54,6 +57,8 @@ class MNISTClient(fl.client.NumPyClient):
 
   def fit(self, parameters, config):
     log(DEBUG, f"Client {client_index} is doing fit() with config: {config}")
+    current_round=config['server_round']
+    print('current_round:', current_round)
     model.set_weights(parameters)
     model.fit (x_train, y_train, epochs=NUM_EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2, use_multiprocessing=True)
     return model.get_weights(), len(x_train), {}
@@ -62,7 +67,7 @@ class MNISTClient(fl.client.NumPyClient):
     log(DEBUG, f"Client {client_index} is doing evaluate() with verbose: {VERBOSE}")
     model.set_weights(parameters)
     loss, accuracy = model.evaluate(x_test, y_test, verbose=VERBOSE)
-    log(INFO, f"Client {client_index} achieved loss: {loss} and accuracy: {accuracy}")
+    log(INFO, f"Client {client_index} achieved loss={loss} and accuracy={accuracy} on round: {current_round} with config: {config}")
     return loss, len(x_test), {"accuracy": float(accuracy)}
 
 fl.client.start_numpy_client(server_address="[::]:8080", client=MNISTClient())

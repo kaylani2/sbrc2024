@@ -1,7 +1,9 @@
 #!/bin/bash
 
-python server.py 3 > server.log 2>&1 &
-for i in {1..3} # define number of clients here
+declare -u num_clients=2
+
+python server.py $num_clients > server.bash.log 2>&1 &
+for i in `eval echo {1..$num_clients}`
 do
-  python client.py 3 $i > client$i.log 2>&1 &
+  python client.py $num_clients $i > client$i.bash.log 2>&1 &
 done
