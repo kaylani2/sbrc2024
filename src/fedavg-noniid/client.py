@@ -32,7 +32,9 @@ fl.common.logger.configure(identifier="mestrado", filename=filename)
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
 ### Split data (two random labels for each client, except for five clients)
+samples=None
 if (num_clients == 5): ### Must ensure all labels are present
+  samples = str([2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
   train_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
   x_train, y_train = x_train [train_mask], y_train [train_mask]
 else:
@@ -63,7 +65,7 @@ class MNISTClient(fl.client.NumPyClient):
     return model.get_weights()
 
   def fit(self, parameters, config):
-    log(DEBUG, f"Client {client_index} is doing fit() with config: {config}")
+    log(DEBUG, f"Client {client_index} is doing fit() with config: {config} and samples={samples}")
     current_round=config['server_round']
     print('current_round:', current_round)
     model.set_weights(parameters)
