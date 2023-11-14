@@ -32,8 +32,8 @@ fl.common.logger.configure(identifier="mestrado", filename=filename)
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
 ### Split data (two random labels for each client, except for five clients)
-if (num_clients == 5) ### Must ensure all labels are present
-  train_mask = np.isin(y_train, [2 * (num_clients - 1), 2 * (num_clients - 1) + 1]) ### K: Thanks, ChatGPT.
+if (num_clients == 5): ### Must ensure all labels are present
+  train_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
   x_train, y_train = x_train [train_mask], y_train [train_mask]
 else:
   pass ### TODO: choose between random overlapping ou non-overlapping labels
