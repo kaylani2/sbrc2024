@@ -17,7 +17,7 @@ else:
   sys.exit()
 
 
-NUM_ROUNDS=100
+NUM_ROUNDS=250
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
