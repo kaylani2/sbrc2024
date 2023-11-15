@@ -29,7 +29,13 @@ filename = "client_main_"+str(client_index).zfill(len(str(num_clients)))+"_"+str
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Load data
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+try:
+  (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+except:
+  path = '/home/gta/.keras/datasets/mnist.npz'
+  with np.load(path, allow_pickle=True) as f:
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test = f['x_test'], f['y_test']
 
 ### Split data (clients must not have the same samples)
 subset_size = len(x_train) // num_clients
