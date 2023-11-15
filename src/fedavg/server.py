@@ -22,7 +22,7 @@ MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
 ROUND_TIMEOUT=None
-SERVER_ADDRESS="0.0.0.0:8080"
+SERVER_ADDRESS="0.0.0.0:50077"
 
 ### Setup logging.
 filename="server_main_"+str(NUM_ROUNDS)+"rounds_"+str(num_clients)+"clients_fedavg.log"
@@ -38,20 +38,27 @@ model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metr
 
 ### K: Used for centralized evaluation.
 def get_evaluate_fn(model):
-    """Return an evaluation function for server-side evaluation."""
+  """Return an evaluation function for server-side evaluation."""
 
+  try:
     (_, _), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-    x_test = np.expand_dims(x_test, axis=-1)
-    x_test = tf.image.resize(x_test, [32,32])
+  except:
+    path = '/home/gta/.keras/datasets/mnist.npz'
+    with np.load(path, allow_pickle=True) as f:
+       #x_train, y_train = f['x_train'], f['y_train']
+       x_test, y_test = f['x_test'], f['y_test']
+  x_test = np.expand_dims(x_test, axis=-1)
+  x_test = tf.image.resize(x_test, [32,32])
 
-    # The `evaluate` function will be called after every round
-    def evaluate(
-        server_round: int, parameters: NDArrays, config: Dict[str, Scalar]
-    ) -> Optional[Tuple[float, Dict[str, Scalar]]]:
-        model.set_weights(parameters)  # Update model with the latest parameters
-        loss, accuracy = model.evaluate(x_test, y_test)
-        return loss, {"accuracy": accuracy}
-    return evaluate
+  # The `evaluate` function will be called after every round
+  def evaluate(
+    server_round: int, parameters: NDArrays, config: Dict[str, Scalar]
+  ) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+    model.set_weights(parameters)  # Update model with the latest parameters
+    loss, accuracy = model.evaluate(x_test, y_test)
+    return loss, {"accuracy": accuracy}
+
+  return evaluate
 
 ### K: Used to output the round number on each client log. This makes plotting the results easier.
 def fit_round(server_round: int) -> Dict:
