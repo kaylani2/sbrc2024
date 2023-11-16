@@ -15,7 +15,6 @@ else:
   print ("Usage: python server.py num_clients num_rounds")
   sys.exit()
 
-
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
