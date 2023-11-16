@@ -22,7 +22,7 @@ labels = [
 for logfile, label in zip(logfiles, labels):
   # Read the log file
   with open(logfile, 'r') as file:
-      log_content = file.read()
+    log_content = file.read()
 
   # Regular expression pattern to match accuracy values
   accuracy_pattern = r"'accuracy': (\d+\.\d+)"
@@ -32,10 +32,6 @@ for logfile, label in zip(logfiles, labels):
 
   # Convert the accuracy values to floats and store in a list
   accuracy_list = [float(value) for value in accuracy_values]
-
-  # Print the extracted accuracy values
-  #print(len(accuracy_list))
-
 
   x = list(range(1, len(accuracy_list)+ 1))
   plt.plot(x, accuracy_list, label=label, marker='.', alpha=0.5)

@@ -25,7 +25,7 @@ for log_group, config in zip (log_groups, configs):
   for logfile in log_group:
     # Read the log file
     with open(logfile, 'r') as file:
-        log_content = file.read()
+      log_content = file.read()
 
     # Regular expression pattern to match accuracy values
     accuracy_pattern = r"accuracy=(\d+\.\d+)"
@@ -38,12 +38,10 @@ for log_group, config in zip (log_groups, configs):
 
     accuracies.append(accuracy_list)
 
-
   ### K: TESTE
   #import random
   #accuracies[0] = [x + random.uniform(-0.5, 0.5) for x in accuracies[0]]
   #accuracies[1] = [x + random.uniform(-0.5, 0.5) for x in accuracies[1]]
-
 
   # Calculate mean and standard deviation across the lists
   mean_values = np.mean(accuracies, axis=0)

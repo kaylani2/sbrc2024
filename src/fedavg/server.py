@@ -42,8 +42,8 @@ def get_evaluate_fn(model):
   except:
     path = '/home/gta/.keras/datasets/mnist.npz'
     with np.load(path, allow_pickle=True) as f:
-       #x_train, y_train = f['x_train'], f['y_train']
-       x_test, y_test = f['x_test'], f['y_test']
+     #x_train, y_train = f['x_train'], f['y_train']
+     x_test, y_test = f['x_test'], f['y_test']
   x_test = np.expand_dims(x_test, axis=-1)
   x_test = tf.image.resize(x_test, [32,32])
 
@@ -68,26 +68,23 @@ def evaluate_config(server_round: int) -> Dict:
 
 
 class SaveModelStrategy(fl.server.strategy.FedAvg):
-    def aggregate_fit(
-        self,
-        server_round: int,
-        results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]],
-        failures: List[Union[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes], BaseException]],
+  def aggregate_fit(
+    self,
+    server_round: int,
+    results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]],
+    failures: List[Union[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes], BaseException]],
     ) -> Tuple[Optional[fl.common.Parameters], Dict[str, Scalar]]:
+    # Call aggregate_fit from base class (FedAvg) to aggregate parameters and metrics
+    aggregated_parameters, aggregated_metrics = super().aggregate_fit(server_round, results, failures)
+    if aggregated_parameters is not None:
+      # Convert `Parameters` to `List[np.ndarray]`
+      aggregated_ndarrays: List[np.ndarray] = fl.common.parameters_to_ndarrays(aggregated_parameters)
+      # Save aggregated_ndarrays
+      print(f"Saving round {server_round} aggregated_ndarrays...")
+      model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.npz")
+      np.savez(f"model_round-{server_round}-{num_clients}clients-weights.npz", *aggregated_ndarrays)
 
-        # Call aggregate_fit from base class (FedAvg) to aggregate parameters and metrics
-        aggregated_parameters, aggregated_metrics = super().aggregate_fit(server_round, results, failures)
-
-        if aggregated_parameters is not None:
-            # Convert `Parameters` to `List[np.ndarray]`
-            aggregated_ndarrays: List[np.ndarray] = fl.common.parameters_to_ndarrays(aggregated_parameters)
-
-            # Save aggregated_ndarrays
-            print(f"Saving round {server_round} aggregated_ndarrays...")
-            model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.npz")
-            np.savez(f"model_round-{server_round}-{num_clients}clients-weights.npz", *aggregated_ndarrays)
-
-        return aggregated_parameters, aggregated_metrics
+    return aggregated_parameters, aggregated_metrics
 
 fl.server.start_server(
   server_address=SERVER_ADDRESS,

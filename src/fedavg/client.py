@@ -37,13 +37,13 @@ except:
     x_test, y_test = f['x_test'], f['y_test']
 
 ### Split data (clients must not have the same samples)
+# Split train
 subset_size = len(x_train) // num_clients
 x = [x_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
 y = [y_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
 x_train = x[client_index-1] ### Each client receives data related to its index
 y_train = y[client_index-1]
-del x
-del y
+# Split test
 subset_size = len(x_test) // num_clients
 x = [x_test[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
 y = [y_test[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
