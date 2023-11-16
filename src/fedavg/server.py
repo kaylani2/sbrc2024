@@ -8,16 +8,14 @@ from flwr.common import NDArrays, Scalar
 from typing import Dict, Optional, Tuple, List, Union, Callable
 from sys import argv
 
-
-
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
   num_clients = int(argv[1])
+  num_rounds = int(argv[2])
 else:
-  print ("Usage: python server.py num_clients")
+  print ("Usage: python server.py num_clients num_rounds")
   sys.exit()
 
 
-NUM_ROUNDS=100
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
@@ -25,7 +23,7 @@ ROUND_TIMEOUT=None
 SERVER_ADDRESS="0.0.0.0:50077"
 
 ### Setup logging.
-filename="server_main_"+str(NUM_ROUNDS)+"rounds_"+str(num_clients)+"clients_fedavg.log"
+filename="server_main_"+str(num_rounds)+"rounds_"+str(num_clients)+"clients_fedavg.log"
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Define model for centralized evaluation (must be the same as the one used on the clients)
@@ -87,14 +85,15 @@ class SaveModelStrategy(fl.server.strategy.FedAvg):
 
             # Save aggregated_ndarrays
             print(f"Saving round {server_round} aggregated_ndarrays...")
-            np.savez(f"model_round-{server_round}-clients-{num_clients}-weights.npz", *aggregated_ndarrays)
+            model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.npz")
+            np.savez(f"model_round-{server_round}-{num_clients}clients-weights.npz", *aggregated_ndarrays)
 
         return aggregated_parameters, aggregated_metrics
 
 fl.server.start_server(
   server_address=SERVER_ADDRESS,
   config=fl.server.ServerConfig(
-    num_rounds=NUM_ROUNDS,
+    num_rounds=num_rounds,
     round_timeout=ROUND_TIMEOUT,
   ),
   #strategy=fl.server.strategy.FedAvg(

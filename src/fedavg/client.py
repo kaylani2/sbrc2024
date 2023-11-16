@@ -7,7 +7,6 @@ from sys import argv
 from logging import INFO, DEBUG
 from flwr.common.logger import log
 
-
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
   client_index = int(argv[2])
