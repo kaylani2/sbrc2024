@@ -41,7 +41,7 @@ except:
 subset_size = len(x_train) // num_clients
 x = [x_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
 y = [y_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
-x_train = x[client_index-1] ### Each client receive data related to its index
+x_train = x[client_index-1] ### Each client receives data related to its index
 y_train = y[client_index-1]
 del x
 del y
