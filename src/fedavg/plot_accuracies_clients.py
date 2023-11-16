@@ -8,41 +8,17 @@ plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 
 
-logfiles_5clients = [
-  '5clients/client_main_1_5_clients.log',
-  '5clients/client_main_2_5_clients.log',
-  '5clients/client_main_3_5_clients.log',
-  '5clients/client_main_4_5_clients.log',
-  '5clients/client_main_5_5_clients.log',
-]
+logfiles_5clients  = [f"5clients/client_main_{i}_5_clients.log" for i in range(1, 5+1)]
+logfiles_10clients = [f"10clients/client_main_{i:02d}_10_clients.log" for i in range(1, 10+1)]
+logfiles_15clients = [f"15clients/client_main_{i:02d}_15_clients.log" for i in range(1, 15+1)]
 
-logfiles_10clients = [
-  '10clients/client_main_01_10_clients.log',
-  '10clients/client_main_02_10_clients.log',
-  '10clients/client_main_03_10_clients.log',
-  '10clients/client_main_04_10_clients.log',
-  '10clients/client_main_05_10_clients.log',
-  '10clients/client_main_06_10_clients.log',
-  '10clients/client_main_07_10_clients.log',
-  '10clients/client_main_08_10_clients.log',
-  '10clients/client_main_09_10_clients.log',
-  '10clients/client_main_10_10_clients.log',
-]
-
-
-log_groups = [logfiles_5clients, logfiles_10clients]
 configs = [
-  {
-    'label1': 'Média 5 clientes',
-    'label2': 'Desvio padrão 5 clientes',
-    'color': 'blue',
-  },
-  {
-    'label1': 'Média 10 clientes',
-    'label2': 'Desvio padrão 10 clientes',
-    'color': 'red',
-  },
+  {'label1': 'Média 5 clientes', 'label2': 'Desvio padrão 5 clientes', 'color': 'blue',},
+  {'label1': 'Média 10 clientes', 'label2': 'Desvio padrão 10 clientes', 'color': 'red',},
+  {'label1': 'Média 15 clientes', 'label2': 'Desvio padrão 15 clientes', 'color': 'green',},
 ]
+
+log_groups = [logfiles_5clients, logfiles_10clients, logfiles_15clients]
 
 for log_group, config in zip (log_groups, configs):
   accuracies=[]
