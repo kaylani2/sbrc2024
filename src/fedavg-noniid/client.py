@@ -40,8 +40,9 @@ except:
 samples=None
 if (num_clients == 5): ### Must ensure all labels are present
   samples = str([2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
-  train_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
-  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  data_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  x_train, y_train = x_train [data_mask], y_train [data_mask]
+  x_test, y_test = x_test [data_mask], y_test [data_mask]
 else:
   pass ### TODO: choose between random overlapping ou non-overlapping labels
 
