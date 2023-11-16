@@ -1,31 +1,27 @@
 import sys
 import flwr as fl
 import numpy as np
-import argparse
 import tensorflow as tf
 from keras.optimizers import Adam
 from flwr.common import NDArrays, Scalar
-from typing import Dict, Optional, Tuple, List, Union, Callable
+from typing import Dict, Optional, Tuple, List, Union
 from sys import argv
 
-
-
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
   num_clients = int(argv[1])
+  num_rounds = int(argv[2])
 else:
-  print ("Usage: python server.py num_clients")
+  print ("Usage: python server.py num_clients num_rounds")
   sys.exit()
 
-
-NUM_ROUNDS=250
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
 ROUND_TIMEOUT=None
-SERVER_ADDRESS="0.0.0.0:8080"
+SERVER_ADDRESS="0.0.0.0:50077"
 
 ### Setup logging.
-filename="server_main_"+str(NUM_ROUNDS)+"rounds_"+str(num_clients)+"clients_fedavg.log"
+filename="server_main_"+str(num_rounds)+"rounds_"+str(num_clients)+"clients_fedavg.log"
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Define model for centralized evaluation (must be the same as the one used on the clients)
@@ -38,20 +34,27 @@ model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metr
 
 ### K: Used for centralized evaluation.
 def get_evaluate_fn(model):
-    """Return an evaluation function for server-side evaluation."""
+  """Return an evaluation function for server-side evaluation."""
 
+  try:
     (_, _), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-    x_test = np.expand_dims(x_test, axis=-1)
-    x_test = tf.image.resize(x_test, [32,32])
+  except:
+    path = '/home/gta/.keras/datasets/mnist.npz'
+    with np.load(path, allow_pickle=True) as f:
+     #x_train, y_train = f['x_train'], f['y_train']
+     x_test, y_test = f['x_test'], f['y_test']
+  x_test = np.expand_dims(x_test, axis=-1)
+  x_test = tf.image.resize(x_test, [32,32])
 
-    # The `evaluate` function will be called after every round
-    def evaluate(
-        server_round: int, parameters: NDArrays, config: Dict[str, Scalar]
-    ) -> Optional[Tuple[float, Dict[str, Scalar]]]:
-        model.set_weights(parameters)  # Update model with the latest parameters
-        loss, accuracy = model.evaluate(x_test, y_test)
-        return loss, {"accuracy": accuracy}
-    return evaluate
+  # The `evaluate` function will be called after every round
+  def evaluate(
+    server_round: int, parameters: NDArrays, config: Dict[str, Scalar]
+  ) -> Optional[Tuple[float, Dict[str, Scalar]]]:
+    model.set_weights(parameters)  # Update model with the latest parameters
+    loss, accuracy = model.evaluate(x_test, y_test)
+    return loss, {"accuracy": accuracy}
+
+  return evaluate
 
 ### K: Used to output the round number on each client log. This makes plotting the results easier.
 def fit_round(server_round: int) -> Dict:
@@ -64,30 +67,28 @@ def evaluate_config(server_round: int) -> Dict:
 
 
 class SaveModelStrategy(fl.server.strategy.FedAvg):
-    def aggregate_fit(
-        self,
-        server_round: int,
-        results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]],
-        failures: List[Union[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes], BaseException]],
+  def aggregate_fit(
+    self,
+    server_round: int,
+    results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]],
+    failures: List[Union[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes], BaseException]],
     ) -> Tuple[Optional[fl.common.Parameters], Dict[str, Scalar]]:
+    # Call aggregate_fit from base class (FedAvg) to aggregate parameters and metrics
+    aggregated_parameters, aggregated_metrics = super().aggregate_fit(server_round, results, failures)
+    if aggregated_parameters is not None:
+      # Convert `Parameters` to `List[np.ndarray]`
+      aggregated_ndarrays: List[np.ndarray] = fl.common.parameters_to_ndarrays(aggregated_parameters)
+      # Save aggregated_ndarrays
+      print(f"Saving round {server_round} aggregated_ndarrays...")
+      model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.npz")
+      np.savez(f"model_round-{server_round}-{num_clients}clients-weights.npz", *aggregated_ndarrays)
 
-        # Call aggregate_fit from base class (FedAvg) to aggregate parameters and metrics
-        aggregated_parameters, aggregated_metrics = super().aggregate_fit(server_round, results, failures)
-
-        if aggregated_parameters is not None:
-            # Convert `Parameters` to `List[np.ndarray]`
-            aggregated_ndarrays: List[np.ndarray] = fl.common.parameters_to_ndarrays(aggregated_parameters)
-
-            # Save aggregated_ndarrays
-            print(f"Saving round {server_round} aggregated_ndarrays...")
-            np.savez(f"model_round-{server_round}-clients-{num_clients}-weights.npz", *aggregated_ndarrays)
-
-        return aggregated_parameters, aggregated_metrics
+    return aggregated_parameters, aggregated_metrics
 
 fl.server.start_server(
   server_address=SERVER_ADDRESS,
   config=fl.server.ServerConfig(
-    num_rounds=NUM_ROUNDS,
+    num_rounds=num_rounds,
     round_timeout=ROUND_TIMEOUT,
   ),
   #strategy=fl.server.strategy.FedAvg(
@@ -100,8 +101,6 @@ fl.server.start_server(
     evaluate_fn=get_evaluate_fn(model)
   )
 )
-
-
 
 ### K: Com PyTorch...
 #To load your progress, you simply append the following lines to your code. Note that this will iterate over all saved checkpoints and load the latest one:

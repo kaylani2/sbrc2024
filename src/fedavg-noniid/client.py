@@ -7,7 +7,6 @@ from sys import argv
 from logging import INFO, DEBUG
 from flwr.common.logger import log
 
-
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
   client_index = int(argv[2])
@@ -29,7 +28,13 @@ filename = "client_main_"+str(client_index).zfill(len(str(num_clients)))+"_"+str
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Load data
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+try:
+  (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+except:
+  path = '/home/gta/.keras/datasets/mnist.npz'
+  with np.load(path, allow_pickle=True) as f:
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test   = f['x_test'], f['y_test']
 
 ### Split data (two random labels for each client, except for five clients)
 samples=None
@@ -39,15 +44,6 @@ if (num_clients == 5): ### Must ensure all labels are present
   x_train, y_train = x_train [train_mask], y_train [train_mask]
 else:
   pass ### TODO: choose between random overlapping ou non-overlapping labels
-
-### K: IID scenario \/
-### subset_size = len(x_train) // num_clients
-### x = [x_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
-### y = [y_train[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
-### x_train = x[client_index-1] ### Each client receive data related to its index
-### y_train = y[client_index-1]
-### del x
-### del y
 
 ### Resize data
 x_train = np.expand_dims(x_train, axis=-1)

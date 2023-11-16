@@ -1,11 +1,10 @@
 import sys
 import flwr as fl
 import numpy as np
-import argparse
 import tensorflow as tf
 from keras.optimizers import Adam
 from flwr.common import NDArrays, Scalar
-from typing import Dict, Optional, Tuple, List, Union, Callable
+from typing import Dict, Optional, Tuple, List, Union
 from sys import argv
 
 if len(sys.argv) > 2:
@@ -102,8 +101,6 @@ fl.server.start_server(
     evaluate_fn=get_evaluate_fn(model)
   )
 )
-
-
 
 ### K: Com PyTorch...
 #To load your progress, you simply append the following lines to your code. Note that this will iterate over all saved checkpoints and load the latest one:

@@ -34,7 +34,7 @@ except:
   path = '/home/gta/.keras/datasets/mnist.npz'
   with np.load(path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
-    x_test, y_test = f['x_test'], f['y_test']
+    x_test, y_test   = f['x_test'], f['y_test']
 
 ### Split data (clients must not have the same samples)
 # Split train
