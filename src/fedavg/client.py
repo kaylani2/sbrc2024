@@ -45,6 +45,13 @@ x_train = x[client_index-1] ### Each client receives data related to its index
 y_train = y[client_index-1]
 del x
 del y
+subset_size = len(x_test) // num_clients
+x = [x_test[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
+y = [y_test[i*subset_size: (i+1)*subset_size] for i in range(num_clients)]
+x_test = x[client_index-1] ### Each client receives data related to its index
+y_test = y[client_index-1]
+del x
+del y
 
 ### Resize data
 x_train = np.expand_dims(x_train, axis=-1)
