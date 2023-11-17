@@ -40,9 +40,44 @@ except:
 samples=None
 if (num_clients == 5): ### Must ensure all labels are present
   samples = str([2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
-  data_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
-  x_train, y_train = x_train [data_mask], y_train [data_mask]
-  x_test, y_test = x_test [data_mask], y_test [data_mask]
+  ### Split train
+  train_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  ### Split test
+  test_mask = np.isin(y_test, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  x_test, y_test = x_test [test_mask], y_test [test_mask]
+  print (f"samples: {samples}")
+  print (f"train_mask: {train_mask}")
+  print (f"test_mask:  {test_mask}")
+  print (f"y_train: {y_train [0:35]}")
+  print (f"y_test:  {y_test  [0:35]}")
+
+
+  #### K: CHECK IF THE SAMPLES ARE CORRECTLY LABELED...
+  #import tensorflow as tf
+  #import matplotlib.pyplot as plt
+  #import numpy as np
+
+  ## Get 9 random indices
+  #random_indices = np.random.choice(len(x_test), 9, replace=False)
+
+  ## Plot 3x3 grid
+  #fig, axes = plt.subplots(3, 3, figsize=(6, 6))
+
+  #for i, ax in enumerate(axes.flat):
+  #  idx = random_indices[i]
+  #  image = x_test[idx]
+  #  label = y_test[idx]
+  #  
+  #  ax.imshow(image, cmap='gray')
+  #  ax.set_title(f"Amostra: {label}")
+  #  ax.axis('off')
+
+  #plt.tight_layout()
+  #plt.show()
+
+  #sys.exit()
+
 else:
   pass ### TODO: choose between random overlapping ou non-overlapping labels
 
@@ -76,4 +111,4 @@ class MNISTClient(fl.client.NumPyClient):
     log(INFO, f"Client {client_index} achieved loss={loss} and accuracy={accuracy} on round: {current_round} with config: {config}")
     return loss, len(x_test), {"accuracy": float(accuracy)}
 
-fl.client.start_numpy_client(server_address="[::]:8080", client=MNISTClient())
+fl.client.start_numpy_client(server_address="[::]:50077", client=MNISTClient())
