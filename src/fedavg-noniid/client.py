@@ -36,15 +36,15 @@ except:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test   = f['x_test'], f['y_test']
 
-### Split data (two random labels for each client, except for five clients)
+### Split data
 samples=None
-if (num_clients == 5): ### Must ensure all labels are present
-  samples = str([2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+if (num_clients == 2): ### Must ensure all labels are present
+  samples = str(tuple(range(5 * (client_index - 1), 5 * client_index))) ### K: Thanks, ChatGPT.
   ### Split train
-  train_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  train_mask = np.isin(y_train, [tuple(range(5 * (client_index - 1), 5 * client_index))])
   x_train, y_train = x_train [train_mask], y_train [train_mask]
   ### Split test
-  test_mask = np.isin(y_test, [2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  test_mask = np.isin(y_test, [tuple(range(5 * (client_index - 1), 5 * client_index))])
   x_test, y_test = x_test [test_mask], y_test [test_mask]
   print (f"samples: {samples}")
   print (f"train_mask: {train_mask}")
@@ -52,7 +52,36 @@ if (num_clients == 5): ### Must ensure all labels are present
   print (f"y_train: {y_train [0:35]}")
   print (f"y_test:  {y_test  [0:35]}")
 
+elif (num_clients == 5): ### Must ensure all labels are present
+  samples = str([2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  ### Split train
+  train_mask = np.isin(y_train, [2 * (client_index - 1), 2 * (client_index - 1) + 1])
+  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  ### Split test
+  test_mask = np.isin(y_test, [2 * (client_index - 1), 2 * (client_index - 1) + 1])
+  x_test, y_test = x_test [test_mask], y_test [test_mask]
+  print (f"samples: {samples}")
+  print (f"train_mask: {train_mask}")
+  print (f"test_mask:  {test_mask}")
+  print (f"y_train: {y_train [0:35]}")
+  print (f"y_test:  {y_test  [0:35]}")
 
+elif (num_clients == 10): ### Must ensure all labels are present
+  samples = str(client_index + 1)
+  ### Split train
+  train_mask = np.isin(y_train, [client_index + 1])
+  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  ### Split test
+  test_mask = np.isin(y_test, [client_index + 1])
+  x_test, y_test = x_test [test_mask], y_test [test_mask]
+  print (f"samples: {samples}")
+  print (f"train_mask: {train_mask}")
+  print (f"test_mask:  {test_mask}")
+  print (f"y_train: {y_train [0:35]}")
+  print (f"y_test:  {y_test  [0:35]}")
+
+else:
+  pass ### TODO: implement non-overlapping samples
   #### K: CHECK IF THE SAMPLES ARE CORRECTLY LABELED...
   #import tensorflow as tf
   #import matplotlib.pyplot as plt
@@ -77,9 +106,6 @@ if (num_clients == 5): ### Must ensure all labels are present
   #plt.show()
 
   #sys.exit()
-
-else:
-  pass ### TODO: choose between random overlapping ou non-overlapping labels
 
 ### Resize data
 x_train = np.expand_dims(x_train, axis=-1)
