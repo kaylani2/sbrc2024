@@ -11,12 +11,14 @@ logfiles = [
   'server_main_100rounds_10clients_fedavg.log',
   'server_main_100rounds_15clients_fedavg.log',
   'server_main_100rounds_25clients_fedavg.log',
+  'server_main_100rounds_50clients_fedavg.log',
 ]
 labels = [
   '5 clientes',
   '10 clientes',
   '15 clientes',
   '25 clientes',
+  '50 clientes',
 ]
 
 for logfile, label in zip(logfiles, labels):
