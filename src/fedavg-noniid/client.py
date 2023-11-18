@@ -65,31 +65,6 @@ elif (num_clients == 5): ### Must ensure all labels are present
   print (f"test_mask:  {test_mask}")
   print (f"y_train: {y_train [0:35]}")
   print (f"y_test:  {y_test  [0:35]}")
-  #### K: CHECK IF THE SAMPLES ARE CORRECTLY LABELED...
-  import tensorflow as tf
-  import matplotlib.pyplot as plt
-  import numpy as np
-
-  # Get 9 random indices
-  random_indices = np.random.choice(len(x_test), 9, replace=False)
-
-  # Plot 3x3 grid
-  fig, axes = plt.subplots(3, 3, figsize=(6, 6))
-
-  for i, ax in enumerate(axes.flat):
-    idx = random_indices[i]
-    image = x_test[idx]
-    label = y_test[idx]
-    
-    ax.imshow(image, cmap='gray')
-    ax.set_title(f"Amostra: {label}")
-    ax.axis('off')
-
-  plt.tight_layout()
-  plt.show()
-
-  sys.exit()
-
 
 elif (num_clients == 10): ### Must ensure all labels are present
   samples = str(client_index + 1)
