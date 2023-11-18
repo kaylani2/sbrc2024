@@ -7,6 +7,7 @@ plt.rc('ytick', labelsize=16)
 
 
 logfiles = [
+  'server_main_100rounds_2clients_fedavg.log',
   'server_main_100rounds_5clients_fedavg.log',
   'server_main_100rounds_10clients_fedavg.log',
   'server_main_100rounds_15clients_fedavg.log',
@@ -14,6 +15,7 @@ logfiles = [
   'server_main_100rounds_50clients_fedavg.log',
 ]
 labels = [
+  '2 clientes',
   '5 clientes',
   '10 clientes',
   '15 clientes',
@@ -38,7 +40,7 @@ for logfile, label in zip(logfiles, labels):
   x = list(range(1, len(accuracy_list)+ 1))
   plt.plot(x, accuracy_list, label=label, marker='.', alpha=0.5)
 
-plt.xlabel("Época")
+plt.xlabel("Rodada")
 plt.ylabel("Acurácia")
 
 plt.legend (loc='lower right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')

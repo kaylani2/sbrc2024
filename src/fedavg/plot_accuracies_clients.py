@@ -8,6 +8,7 @@ plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 
 
+logfiles_2clients  = [f"2clients/client_main_{i}_2_clients.log" for i in range(1, 2+1)]
 logfiles_5clients  = [f"5clients/client_main_{i}_5_clients.log" for i in range(1, 5+1)]
 logfiles_10clients = [f"10clients/client_main_{i:02d}_10_clients.log" for i in range(1, 10+1)]
 logfiles_15clients = [f"15clients/client_main_{i:02d}_15_clients.log" for i in range(1, 15+1)]
@@ -15,6 +16,7 @@ logfiles_25clients = [f"25clients/client_main_{i:02d}_25_clients.log" for i in r
 logfiles_50clients = [f"50clients/client_main_{i:02d}_50_clients.log" for i in range(1, 50+1)]
 
 configs = [
+  {'label1': 'Média 2 clientes', 'label2': 'Desvio padrão 2 clientes', 'color': 'cyan',},
   {'label1': 'Média 5 clientes', 'label2': 'Desvio padrão 5 clientes', 'color': 'blue',},
   {'label1': 'Média 10 clientes', 'label2': 'Desvio padrão 10 clientes', 'color': 'red',},
   {'label1': 'Média 15 clientes', 'label2': 'Desvio padrão 15 clientes', 'color': 'green',},
@@ -22,7 +24,7 @@ configs = [
   {'label1': 'Média 50 clientes', 'label2': 'Desvio padrão 50 clientes', 'color': 'purple',},
 ]
 
-log_groups = [logfiles_5clients, logfiles_10clients, logfiles_15clients, logfiles_25clients, logfiles_50clients]
+log_groups = [logfiles_2clients, logfiles_5clients, logfiles_10clients, logfiles_15clients, logfiles_25clients, logfiles_50clients]
 
 for log_group, config in zip (log_groups, configs):
   accuracies=[]
@@ -50,7 +52,7 @@ for log_group, config in zip (log_groups, configs):
   plt.fill_between(np.arange(len(mean_values)), mean_values - std_dev, mean_values + std_dev, color=config['color'], alpha=0.2, label=config['label2'])
 
 
-plt.xlabel("Época")
+plt.xlabel("Rodada")
 plt.ylabel("Acurácia")
 plt.legend(loc='center right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
 plt.gcf().set_size_inches(10, 7)  # Adjust the figure size (width, height) to fit the legend

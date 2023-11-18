@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -u num_clients=2
+declare -u num_clients=5
 declare -u num_rounds=250
 
 python server.py $num_clients $num_rounds > server-$num_rounds-rounds-$num_clients-clients.bash.log 2>&1 &
