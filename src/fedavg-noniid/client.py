@@ -80,8 +80,53 @@ elif (num_clients == 10): ### Must ensure all labels are present
   print (f"y_train: {y_train [0:35]}")
   print (f"y_test:  {y_test  [0:35]}")
 
+elif (num_clients == 25): ### Same as 5 clients, but with a fifth of the size
+  fake_index = (client_index - 1) % 5 + 1 
+  samples = str([2 * (fake_index - 1), 2 * (fake_index - 1) + 1]) ### K: Thanks, ChatGPT.
+
+  train_mask = np.isin(y_train, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
+  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  ### Split test
+  test_mask = np.isin(y_test, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
+  x_test, y_test = x_test [test_mask], y_test [test_mask]
+
+  if (client_index <= 5):
+    x_train, y_train = x_train [:len(x_train)/5], y_train [:len(y_train)/5]
+  elif (client_index <= 10):
+    x_train, y_train = x_train [len(x_train)/5 : 2*len(x_train)/5], y_train [len(y_train)/5 : 2*len(y_train)/5]
+  elif (client_index <= 15):
+    x_train, y_train = x_train [2*len(x_train)/5 : 3*len(x_train)/5], y_train [2*len(y_train)/5 : 3*len(y_train)/5]
+  elif (client_index <= 20):
+    x_train, y_train = x_train [3*len(x_train)/5 : 4*len(x_train)/5], y_train [3*len(y_train)/5 : 4*len(y_train)/5]
+  else:
+    x_train, y_train = x_train [4*len(x_train)/5:], y_train [4*len(y_train)/5:]
+
+  print (f"samples: {samples}")
+  print (f"train_mask: {train_mask}")
+  print (f"test_mask:  {test_mask}")
+  print (f"y_train: {y_train [0:35]}")
+  print (f"y_test:  {y_test  [0:35]}")
+
+elif (num_clients == 50): ### Same as 5 clients, but with a tenth of the size
+  fake_index = (client_index - 1) % 5 + 1 
+  samples = str([2 * (fake_index - 1), 2 * (fake_index - 1) + 1]) ### K: Thanks, ChatGPT.
+
+  train_mask = np.isin(y_train, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
+  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  ### Split test
+  test_mask = np.isin(y_test, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
+  x_test, y_test = x_test [test_mask], y_test [test_mask]
+
+  sys.exit() ### TODO: implement
+
+  print (f"samples: {samples}")
+  print (f"train_mask: {train_mask}")
+  print (f"test_mask:  {test_mask}")
+  print (f"y_train: {y_train [0:35]}")
+  print (f"y_test:  {y_test  [0:35]}")
 else:
-  pass ### TODO: implement non-overlapping samples
+  print ('Wrong number of clients!')
+  sys.exit()
   #### K: CHECK IF THE SAMPLES ARE CORRECTLY LABELED...
   #import tensorflow as tf
   #import matplotlib.pyplot as plt
