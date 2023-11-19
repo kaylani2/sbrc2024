@@ -67,12 +67,12 @@ elif (num_clients == 5): ### Must ensure all labels are present
   print (f"y_test:  {y_test  [0:35]}")
 
 elif (num_clients == 10): ### Must ensure all labels are present
-  samples = str(client_index + 1)
+  samples = str(client_index - 1)
   ### Split train
-  train_mask = np.isin(y_train, [client_index + 1])
+  train_mask = np.isin(y_train, [client_index - 1])
   x_train, y_train = x_train [train_mask], y_train [train_mask]
   ### Split test
-  test_mask = np.isin(y_test, [client_index + 1])
+  test_mask = np.isin(y_test, [client_index - 1])
   x_test, y_test = x_test [test_mask], y_test [test_mask]
   print (f"samples: {samples}")
   print (f"train_mask: {train_mask}")

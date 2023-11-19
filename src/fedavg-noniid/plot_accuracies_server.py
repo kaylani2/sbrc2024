@@ -7,10 +7,20 @@ plt.rc('ytick', labelsize=16)
 
 
 logfiles = [
-  'server_main_500rounds_5clients_fedavg.log',
+  'server_main_250rounds_2clients_fedavg.log',
+  'server_main_250rounds_5clients_fedavg.log',
+  'server_main_250rounds_10clients_fedavg.log',
+  'server_main_250rounds_15clients_fedavg.log',
+  'server_main_250rounds_25clients_fedavg.log',
+  'server_main_250rounds_50clients_fedavg.log',
 ]
 labels = [
+  '2 clientes',
   '5 clientes',
+  '10 clientes',
+  '15 clientes',
+  '25 clientes',
+  '50 clientes',
 ]
 
 for logfile, label in zip(logfiles, labels):
@@ -34,7 +44,7 @@ plt.xlabel("Rodada")
 plt.ylabel("Acurácia")
 
 plt.legend (loc='lower right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
-plt.xlim (0, 501)
+plt.xlim (0, 251)
 plt.gcf().set_size_inches(12, 6)  # Adjust the figure size (width, height) to fit the legend
 plt.tight_layout()
 plt.show()
