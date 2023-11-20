@@ -80,10 +80,34 @@ elif (num_clients == 10): ### Must ensure all labels are present
   print (f"y_train: {y_train [0:35]}")
   print (f"y_test:  {y_test  [0:35]}")
 
+elif (num_clients == 15): ### Same as 5 clients, but with a third of the size
+  fake_index = (client_index - 1) % 5 + 1 
+  samples = str([2 * (fake_index - 1), 2 * (fake_index - 1) + 1]) ### K: Thanks, ChatGPT.
+  ### Split train
+  train_mask = np.isin(y_train, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
+  x_train, y_train = x_train [train_mask], y_train [train_mask]
+  ### Split test
+  test_mask = np.isin(y_test, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
+  x_test, y_test = x_test [test_mask], y_test [test_mask]
+
+  if (client_index <= 5):
+    x_train, y_train = x_train [:len(x_train)/3], y_train [:len(y_train)/3]
+  elif (client_index <= 10):
+    x_train, y_train = x_train [len(x_train)/3 : 2*len(x_train)/3], y_train [len(y_train)/3 : 2*len(y_train)/3]
+  else:
+    x_train, y_train = x_train [2*len(x_train)/3:], y_train [2*len(y_train)/3:]
+
+  print (f"samples: {samples}")
+  print (f"train_mask: {train_mask}")
+  print (f"test_mask:  {test_mask}")
+  print (f"y_train: {y_train [0:35]}")
+  print (f"y_test:  {y_test  [0:35]}")
+
+
 elif (num_clients == 25): ### Same as 5 clients, but with a fifth of the size
   fake_index = (client_index - 1) % 5 + 1 
   samples = str([2 * (fake_index - 1), 2 * (fake_index - 1) + 1]) ### K: Thanks, ChatGPT.
-
+  ### Split train
   train_mask = np.isin(y_train, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
   x_train, y_train = x_train [train_mask], y_train [train_mask]
   ### Split test
@@ -110,14 +134,34 @@ elif (num_clients == 25): ### Same as 5 clients, but with a fifth of the size
 elif (num_clients == 50): ### Same as 5 clients, but with a tenth of the size
   fake_index = (client_index - 1) % 5 + 1 
   samples = str([2 * (fake_index - 1), 2 * (fake_index - 1) + 1]) ### K: Thanks, ChatGPT.
-
+  ### Split train
   train_mask = np.isin(y_train, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
   x_train, y_train = x_train [train_mask], y_train [train_mask]
   ### Split test
   test_mask = np.isin(y_test, [2 * (fake_index - 1), 2 * (fake_index - 1) + 1])
   x_test, y_test = x_test [test_mask], y_test [test_mask]
 
-  sys.exit() ### TODO: implement
+  if (client_index <= 5):
+    x_train, y_train = x_train [:len(x_train)/10], y_train [:len(y_train)/10]
+  elif (client_index <= 10):
+    x_train, y_train = x_train [len(x_train)/10 : 2*len(x_train)/10], y_train [len(y_train)/10 : 2*len(y_train)/10]
+  elif (client_index <= 15):
+    x_train, y_train = x_train [2*len(x_train)/10 : 3*len(x_train)/10], y_train [2*len(y_train)/10 : 3*len(y_train)/10]
+  elif (client_index <= 20):
+    x_train, y_train = x_train [3*len(x_train)/10 : 4*len(x_train)/10], y_train [3*len(y_train)/10 : 4*len(y_train)/10]
+  elif (client_index <= 25):
+    x_train, y_train = x_train [4*len(x_train)/10 : 5*len(x_train)/10], y_train [4*len(y_train)/10 : 5*len(y_train)/10]
+  elif (client_index <= 30):
+    x_train, y_train = x_train [5*len(x_train)/10 : 6*len(x_train)/10], y_train [5*len(y_train)/10 : 6*len(y_train)/10]
+  elif (client_index <= 35):
+    x_train, y_train = x_train [6*len(x_train)/10 : 7*len(x_train)/10], y_train [6*len(y_train)/10 : 7*len(y_train)/10]
+  elif (client_index <= 40):
+    x_train, y_train = x_train [7*len(x_train)/10 : 8*len(x_train)/10], y_train [7*len(y_train)/10 : 8*len(y_train)/10]
+  elif (client_index <= 45):
+    x_train, y_train = x_train [8*len(x_train)/10 : 9*len(x_train)/10], y_train [8*len(y_train)/10 : 9*len(y_train)/10]
+  else:
+    x_train, y_train = x_train [9*len(x_train)/10:], y_train [9*len(y_train)/10:]
+
 
   print (f"samples: {samples}")
   print (f"train_mask: {train_mask}")
