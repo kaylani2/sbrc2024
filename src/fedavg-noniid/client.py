@@ -48,11 +48,6 @@ if (num_clients == 2): ### Must ensure all labels are present
   ### Split test
   test_mask = np.isin(y_test, [tuple(range(5 * (client_index - 1), 5 * client_index))])
   x_test, y_test = x_test [test_mask], y_test [test_mask]
-  print (f"samples: {samples}")
-  print (f"train_mask: {train_mask}")
-  print (f"test_mask:  {test_mask}")
-  print (f"y_train: {y_train [0:35]}")
-  print (f"y_test:  {y_test  [0:35]}")
 
 elif (num_clients == 5): ### Must ensure all labels are present
   samples = str([2 * (client_index - 1), 2 * (client_index - 1) + 1]) ### K: Thanks, ChatGPT.
@@ -62,11 +57,6 @@ elif (num_clients == 5): ### Must ensure all labels are present
   ### Split test
   test_mask = np.isin(y_test, [2 * (client_index - 1), 2 * (client_index - 1) + 1])
   x_test, y_test = x_test [test_mask], y_test [test_mask]
-  print (f"samples: {samples}")
-  print (f"train_mask: {train_mask}")
-  print (f"test_mask:  {test_mask}")
-  print (f"y_train: {y_train [0:35]}")
-  print (f"y_test:  {y_test  [0:35]}")
 
 elif (num_clients == 10): ### Must ensure all labels are present
   samples = str(client_index - 1)
@@ -76,11 +66,6 @@ elif (num_clients == 10): ### Must ensure all labels are present
   ### Split test
   test_mask = np.isin(y_test, [client_index - 1])
   x_test, y_test = x_test [test_mask], y_test [test_mask]
-  print (f"samples: {samples}")
-  print (f"train_mask: {train_mask}")
-  print (f"test_mask:  {test_mask}")
-  print (f"y_train: {y_train [0:35]}")
-  print (f"y_test:  {y_test  [0:35]}")
 
 elif (num_clients == 15): ### Same as 5 clients, but with a third of the size
   print ('15 clients...')
@@ -99,13 +84,6 @@ elif (num_clients == 15): ### Same as 5 clients, but with a third of the size
     x_train, y_train = x_train [len(x_train)//3 : 2*len(x_train)//3], y_train [len(y_train)//3 : 2*len(y_train)//3]
   else:
     x_train, y_train = x_train [2*len(x_train)//3:], y_train [2*len(y_train)//3:]
-
-  print (f"samples: {samples}")
-  print (f"train_mask: {train_mask}")
-  print (f"test_mask:  {test_mask}")
-  print (f"y_train: {y_train [0:35]}")
-  print (f"y_test:  {y_test  [0:35]}")
-
 
 elif (num_clients == 25): ### Same as 5 clients, but with a fifth of the size
   fake_index = (client_index - 1) % 5 + 1 
@@ -127,12 +105,6 @@ elif (num_clients == 25): ### Same as 5 clients, but with a fifth of the size
     x_train, y_train = x_train [3*len(x_train)//5 : 4*len(x_train)//5], y_train [3*len(y_train)//5 : 4*len(y_train)//5]
   else:
     x_train, y_train = x_train [4*len(x_train)//5:], y_train [4*len(y_train)//5:]
-
-  print (f"samples: {samples}")
-  print (f"train_mask: {train_mask}")
-  print (f"test_mask:  {test_mask}")
-  print (f"y_train: {y_train [0:35]}")
-  print (f"y_test:  {y_test  [0:35]}")
 
 elif (num_clients == 50): ### Same as 5 clients, but with a tenth of the size
   fake_index = (client_index - 1) % 5 + 1 
@@ -164,40 +136,36 @@ elif (num_clients == 50): ### Same as 5 clients, but with a tenth of the size
     x_train, y_train = x_train [8*len(x_train)//10 : 9*len(x_train)//10], y_train [8*len(y_train)//10 : 9*len(y_train)//10]
   else:
     x_train, y_train = x_train [9*len(x_train)//10:], y_train [9*len(y_train)//10:]
-
-
-  print (f"samples: {samples}")
-  print (f"train_mask: {train_mask}")
-  print (f"test_mask:  {test_mask}")
-  print (f"y_train: {y_train [0:35]}")
-  print (f"y_test:  {y_test  [0:35]}")
 else:
   print ('Wrong number of clients!')
   sys.exit()
-  #### K: CHECK IF THE SAMPLES ARE CORRECTLY LABELED...
-  #import tensorflow as tf
-  #import matplotlib.pyplot as plt
-  #import numpy as np
 
-  ## Get 9 random indices
-  #random_indices = np.random.choice(len(x_test), 9, replace=False)
+#### K: CHECK IF THE SAMPLES ARE CORRECTLY LABELED...
+#import matplotlib.pyplot as plt
+## Get 9 random indices
+#random_indices = np.random.choice(len(x_test), 9, replace=False)
+## Plot 3x3 grid
+#fig, axes = plt.subplots(3, 3, figsize=(6, 6))
+#for i, ax in enumerate(axes.flat):
+#  idx = random_indices[i]
+#  image = x_test[idx]
+#  label = y_test[idx]
+#  
+#  ax.imshow(image, cmap='gray')
+#  ax.set_title(f"Amostra: {label}")
+#  ax.axis('off')
+#plt.tight_layout()
+#plt.show()
+#sys.exit()
 
-  ## Plot 3x3 grid
-  #fig, axes = plt.subplots(3, 3, figsize=(6, 6))
-
-  #for i, ax in enumerate(axes.flat):
-  #  idx = random_indices[i]
-  #  image = x_test[idx]
-  #  label = y_test[idx]
-  #  
-  #  ax.imshow(image, cmap='gray')
-  #  ax.set_title(f"Amostra: {label}")
-  #  ax.axis('off')
-
-  #plt.tight_layout()
-  #plt.show()
-
-  #sys.exit()
+print (f"client_index: {client_index}")
+print (f"samples: {samples}")
+print (f"len(x_train): {len(x_train)}")
+print (f"len(x_test): {len(x_test)}")
+print (f"train_mask: {train_mask}")
+print (f"test_mask:  {test_mask}")
+print (f"y_train: {y_train [0:35]}")
+print (f"y_test:  {y_test  [0:35]}")
 
 ### Resize data
 print ('Resizing data...')
