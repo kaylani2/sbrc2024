@@ -13,10 +13,10 @@ def load_compiled_model (model='MobileNetV2'):
       alpha=0.7,
       weights=None)
 
-    optimizer = Adam(learning_rate=1e-2)
+    optimizer = Adam(learning_rate=1e-3)
 
     model.compile (
-      loss="sparse_categorical_crossentropy",
+      loss="sparse_categorical_accuracy",
       optimizer=optimizer,
       metrics=["accuracy"])
 

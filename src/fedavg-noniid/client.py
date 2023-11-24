@@ -6,6 +6,7 @@ from keras.optimizers import Adam
 from sys import argv
 from logging import INFO, DEBUG
 from flwr.common.logger import log
+from loaders import load_compiled_model
 
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
@@ -175,10 +176,12 @@ x_test = np.expand_dims(x_test, axis=-1)
 x_test = tf.image.resize(x_test, [32,32])
 
 ### Define model
-print ('Loading model...')
-model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
-optimizer = Adam(learning_rate=LEARNING_RATE)
-model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
+#print ('Loading model...')
+#model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
+#optimizer = Adam(learning_rate=LEARNING_RATE)
+#model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
+
+model = load_compiled_model('MobileNetV2')
 
 class MNISTClient(fl.client.NumPyClient):
   def get_parameters(self, config):

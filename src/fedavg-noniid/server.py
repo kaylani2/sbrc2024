@@ -6,6 +6,7 @@ from keras.optimizers import Adam
 from flwr.common import NDArrays, Scalar
 from typing import Dict, Optional, Tuple, List, Union
 from sys import argv
+from loaders import load_compiled_model
 
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
@@ -25,12 +26,13 @@ filename="server_main_"+str(num_rounds)+"rounds_"+str(num_clients)+"clients_feda
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Define model for centralized evaluation (must be the same as the one used on the clients)
-LEARNING_RATE=1e-2
-METRICS = ["accuracy"]
-model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
-optimizer = Adam(learning_rate=LEARNING_RATE)
-model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
+#LEARNING_RATE=1e-2
+#METRICS = ["accuracy"]
+#model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
+#optimizer = Adam(learning_rate=LEARNING_RATE)
+#model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
 
+model = load_compiled_model('MobileNetV2')
 
 ### K: Used for centralized evaluation.
 def get_evaluate_fn(model):
