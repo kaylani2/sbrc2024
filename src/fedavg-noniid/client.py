@@ -6,7 +6,7 @@ from keras.optimizers import Adam
 from sys import argv
 from logging import INFO, DEBUG
 from flwr.common.logger import log
-from loaders import load_compiled_model
+from loaders import load_compiled_model, load_dataset
 
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
@@ -28,18 +28,11 @@ current_round=0
 filename = "client_main_"+str(client_index).zfill(len(str(num_clients)))+"_"+str(num_clients)+"_clients.log"
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
-print ('Loading data...')
-### Load data
-try:
-  (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-except:
-  path = '/home/gta/.keras/datasets/mnist.npz'
-  with np.load(path, allow_pickle=True) as f:
-    x_train, y_train = f['x_train'], f['y_train']
-    x_test, y_test   = f['x_test'], f['y_test']
+#### Load data
+(x_train, y_train), (x_test, y_test) = load_dataset('mnist', resize=True)
 
-print ('Splitting data...')
 ### Split data
+print ('Splitting data...')
 samples=None
 if (num_clients == 2): ### Must ensure all labels are present
   samples = str(tuple(range(5 * (client_index - 1), 5 * client_index))) ### K: Thanks, ChatGPT.
@@ -169,19 +162,14 @@ print (f"y_train: {y_train [0:35]}")
 print (f"y_test:  {y_test  [0:35]}")
 
 ### Resize data
-print ('Resizing data...')
-x_train = np.expand_dims(x_train, axis=-1)
-x_train = tf.image.resize(x_train, [32,32])
-x_test = np.expand_dims(x_test, axis=-1)
-x_test = tf.image.resize(x_test, [32,32])
+#print ('Resizing data...')
+#x_train = np.expand_dims(x_train, axis=-1)
+#x_train = tf.image.resize(x_train, [32,32])
+#x_test = np.expand_dims(x_test, axis=-1)
+#x_test = tf.image.resize(x_test, [32,32])
 
-### Define model
-#print ('Loading model...')
-#model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
-#optimizer = Adam(learning_rate=LEARNING_RATE)
-#model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
-
-model = load_compiled_model('MobileNetV2')
+### Define and load model
+model = load_compiled_model('custom')
 
 class MNISTClient(fl.client.NumPyClient):
   def get_parameters(self, config):
