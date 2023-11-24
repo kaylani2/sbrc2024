@@ -11,7 +11,7 @@ def load_compiled_model (model='MobileNetV2'):
     model = tf.keras.applications.MobileNetV2(
       (32,32,1),
       classes=10,
-      alpha=0.7,
+      alpha=0.4,
       weights=None)
 
     optimizer = Adam(learning_rate=1e-3)
