@@ -14,7 +14,7 @@ def load_compiled_model (model='MobileNetV2'):
       alpha=0.4,
       weights=None)
 
-    optimizer = Adam(learning_rate=1e-3)
+    optimizer = Adam(learning_rate=1e-2)
 
     model.compile (
       loss="sparse_categorical_crossentropy",
@@ -47,7 +47,7 @@ def load_compiled_model (model='MobileNetV2'):
     model.add(Dropout(0.4))
     model.add(Dense(10, activation='softmax'))
 
-    optimizer = Adam(learning_rate=1e-2)
+    optimizer = Adam(learning_rate=1e-3)
 
     model.compile (
       loss="sparse_categorical_crossentropy",
