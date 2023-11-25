@@ -17,6 +17,9 @@ else:
   print ("Usage: python client.py num_clients client_index")
   sys.exit()
 
+MODEL='custom_cifar10'
+DATASET='cifar10'
+RESIZE=False
 LEARNING_RATE=1e-2
 NUM_EPOCHS=1
 BATCH_SIZE=64
@@ -29,7 +32,7 @@ filename = "client_main_"+str(client_index).zfill(len(str(num_clients)))+"_"+str
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 #### Load data
-(x_train, y_train), (x_test, y_test) = load_dataset('mnist', resize=True)
+(x_train, y_train), (x_test, y_test) = load_dataset(DATASET, RESIZE)
 
 ### Split data
 print ('Splitting data...')
@@ -169,7 +172,7 @@ print (f"y_test:  {y_test  [0:35]}")
 #x_test = tf.image.resize(x_test, [32,32])
 
 ### Define and load model
-model = load_compiled_model('custom')
+model = load_compiled_model(MODEL)
 
 class MNISTClient(fl.client.NumPyClient):
   def get_parameters(self, config):

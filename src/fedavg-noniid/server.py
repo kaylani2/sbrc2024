@@ -15,6 +15,9 @@ else:
   print ("Usage: python server.py num_clients num_rounds")
   sys.exit()
 
+MODEL='custom_cifar10'
+DATASET='cifar10'
+RESIZE=False
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
@@ -26,13 +29,13 @@ filename="server_main_"+str(num_rounds)+"rounds_"+str(num_clients)+"clients_feda
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Define and load model
-model = load_compiled_model('custom')
+model = load_compiled_model(MODEL)
 
 ### K: Used for centralized evaluation.
 def get_evaluate_fn(model):
   """Return an evaluation function for server-side evaluation."""
 
-  (_, _), (x_test, y_test) = load_dataset('mnist', resize=True)
+  (_, _), (x_test, y_test) = load_dataset(DATASET, RESIZE)
 
   # The `evaluate` function will be called after every round
   def evaluate(
