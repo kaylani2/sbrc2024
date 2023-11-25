@@ -1,10 +1,11 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+from collections import Counter
 
 # Load MNIST dataset
 mnist = tf.keras.datasets.mnist
-(_, _), (x_test, y_test) = mnist.load_data()
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 # Get 9 random indices
 random_indices = np.random.choice(len(x_test), 9, replace=False)
@@ -24,3 +25,12 @@ for i, ax in enumerate(axes.flat):
 plt.tight_layout()
 #plt.show()
 plt.savefig ('mnist_samples.pdf')
+
+
+class_counts = Counter(y_train)
+for label, count in class_counts.items():
+    print(f"(Training set) Class {label}: {count} samples")
+
+class_counts = Counter(y_test)
+for label, count in class_counts.items():
+    print(f"(Test set) Class {label}: {count} samples")
