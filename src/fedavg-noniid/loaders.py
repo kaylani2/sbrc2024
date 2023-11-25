@@ -54,6 +54,7 @@ def load_compiled_model (model='MobileNetV2'):
       optimizer=optimizer,
       metrics=["accuracy"])
 
+  print(model.summary())
   return model
 
 
@@ -76,3 +77,7 @@ def load_dataset (dataset='mnist', resize=True):
     x_test = tf.image.resize(x_test, [32,32])
 
   return (x_train, y_train), (x_test, y_test)
+
+
+
+load_compiled_model('custom')
