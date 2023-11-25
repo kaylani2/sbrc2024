@@ -6,6 +6,7 @@ from keras.optimizers import Adam
 from flwr.common import NDArrays, Scalar
 from typing import Dict, Optional, Tuple, List, Union
 from sys import argv
+from loaders import load_compiled_model, load_dataset
 
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
@@ -14,6 +15,9 @@ else:
   print ("Usage: python server.py num_clients num_rounds")
   sys.exit()
 
+DATASET='cifar10'
+RESIZE=False
+MODEL='custom_cifar10'
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
@@ -24,27 +28,14 @@ SERVER_ADDRESS="0.0.0.0:50077"
 filename="server_main_"+str(num_rounds)+"rounds_"+str(num_clients)+"clients_fedavg.log"
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
-### Define model for centralized evaluation (must be the same as the one used on the clients)
-LEARNING_RATE=1e-2
-METRICS = ["accuracy"]
-model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
-optimizer = Adam(learning_rate=LEARNING_RATE)
-model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
-
+### Define and load model
+model = load_compiled_model(MODEL)
 
 ### K: Used for centralized evaluation.
 def get_evaluate_fn(model):
   """Return an evaluation function for server-side evaluation."""
 
-  try:
-    (_, _), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-  except:
-    path = '/home/gta/.keras/datasets/mnist.npz'
-    with np.load(path, allow_pickle=True) as f:
-     #x_train, y_train = f['x_train'], f['y_train']
-     x_test, y_test = f['x_test'], f['y_test']
-  x_test = np.expand_dims(x_test, axis=-1)
-  x_test = tf.image.resize(x_test, [32,32])
+  (_, _), (x_test, y_test) = load_dataset(DATASET, resize=RESIZE)
 
   # The `evaluate` function will be called after every round
   def evaluate(

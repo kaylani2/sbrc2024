@@ -6,6 +6,7 @@ from keras.optimizers import Adam
 from sys import argv
 from logging import INFO, DEBUG
 from flwr.common.logger import log
+from loaders import load_compiled_model, load_dataset
 
 if len(sys.argv) > 2:
   num_clients = int(argv[1])
@@ -16,6 +17,10 @@ else:
   print ("Usage: python client.py num_clients client_index")
   sys.exit()
 
+
+DATASET='cifar10'
+RESIZE=False
+MODEL='custom_cifar10'
 LEARNING_RATE=1e-2
 NUM_EPOCHS=1
 BATCH_SIZE=64
@@ -28,13 +33,7 @@ filename = "client_main_"+str(client_index).zfill(len(str(num_clients)))+"_"+str
 fl.common.logger.configure(identifier="mestrado", filename=filename)
 
 ### Load data
-try:
-  (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-except:
-  path = '/home/gta/.keras/datasets/mnist.npz'
-  with np.load(path, allow_pickle=True) as f:
-    x_train, y_train = f['x_train'], f['y_train']
-    x_test, y_test   = f['x_test'], f['y_test']
+(x_train, y_train), (x_test, y_test) = load_dataset(DATASET, resize=RESIZE)
 
 ### Split data (clients must not have the same samples)
 # Split train
@@ -52,16 +51,8 @@ y_test = y[client_index-1]
 del x
 del y
 
-### Resize data
-x_train = np.expand_dims(x_train, axis=-1)
-x_train = tf.image.resize(x_train, [32,32])
-x_test = np.expand_dims(x_test, axis=-1)
-x_test = tf.image.resize(x_test, [32,32])
-
-### Define model
-model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
-optimizer = Adam(learning_rate=LEARNING_RATE)
-model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
+### Define and load model
+model = load_compiled_model(MODEL)
 
 class MNISTClient(fl.client.NumPyClient):
   def get_parameters(self, config):
