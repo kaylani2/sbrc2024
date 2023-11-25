@@ -60,14 +60,22 @@ def load_compiled_model (model='MobileNetV2'):
 
 def load_dataset (dataset='mnist', resize=True):
   print ('Loading data...')
-  ### Load data
-  try:
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-  except:
-    path = '/home/gta/.keras/datasets/mnist.npz'
-    with np.load(path, allow_pickle=True) as f:
-      x_train, y_train = f['x_train'], f['y_train']
-      x_test, y_test   = f['x_test'], f['y_test']
+
+  if (dataset=='mnist'):
+    try:
+      (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+    except:
+      path = '/home/gta/.keras/datasets/mnist.npz'
+      with np.load(path, allow_pickle=True) as f:
+        x_train, y_train = f['x_train'], f['y_train']
+        x_test, y_test   = f['x_test'], f['y_test']
+
+
+  if (dataset=='cifar10'):
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    # Normalize pixel values to be between 0 and 1
+    x_train, x_test = x_train / 255.0, x_test / 255.0
+
 
   if (resize):
     print ('Resizing data...')
@@ -77,7 +85,3 @@ def load_dataset (dataset='mnist', resize=True):
     x_test = tf.image.resize(x_test, [32,32])
 
   return (x_train, y_train), (x_test, y_test)
-
-
-
-load_compiled_model('custom')
