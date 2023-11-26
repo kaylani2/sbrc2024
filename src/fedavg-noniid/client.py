@@ -1,25 +1,29 @@
+import sys
 import flwr as fl
 import tensorflow as tf
 import numpy as np
-import sys
-from keras.optimizers import Adam
 from sys import argv
-from logging import INFO, DEBUG
+from keras.optimizers import Adam
 from flwr.common.logger import log
+from logging import INFO, DEBUG
 from loaders import load_compiled_model, load_dataset
 
-if len(sys.argv) > 2:
+if (len(sys.argv) > 4):
   num_clients = int(argv[1])
   client_index = int(argv[2])
+  model = str(argv[3])
+  dataset = str(argv[4])
   print("num_clients:", num_clients)
   print("client_index:", client_index)
+  print("model:", model)
+  print("dataset:", dataset)
 else:
   print ("Usage: python client.py num_clients client_index")
   sys.exit()
 
 MODEL='custom_cifar10'
 DATASET='cifar10'
-RESIZE=False
+RESIZE=True
 LEARNING_RATE=1e-2
 NUM_EPOCHS=1
 BATCH_SIZE=64

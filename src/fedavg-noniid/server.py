@@ -2,22 +2,24 @@ import sys
 import flwr as fl
 import numpy as np
 import tensorflow as tf
+from sys import argv
 from keras.optimizers import Adam
 from flwr.common import NDArrays, Scalar
 from typing import Dict, Optional, Tuple, List, Union
-from sys import argv
 from loaders import load_compiled_model, load_dataset
 
-if len(sys.argv) > 2:
+if (len(sys.argv) > 4):
   num_clients = int(argv[1])
   num_rounds = int(argv[2])
+  model = str(argv[3])
+  dataset = str(argv[4])
 else:
   print ("Usage: python server.py num_clients num_rounds")
   sys.exit()
 
 MODEL='custom_cifar10'
 DATASET='cifar10'
-RESIZE=False
+RESIZE=True
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients
 FRACTION_FIT=1.0
