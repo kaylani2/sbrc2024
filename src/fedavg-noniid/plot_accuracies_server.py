@@ -6,12 +6,12 @@ plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 
 logfiles = [
-  'logs_plot/server_main_500rounds_2clients_fedavg.log',
-  'logs_plot/server_main_500rounds_5clients_fedavg.log',
-  'logs_plot/server_main_500rounds_10clients_fedavg.log',
-  'logs_plot/server_main_500rounds_15clients_fedavg.log',
-  'logs_plot/server_main_500rounds_25clients_fedavg.log',
-  'logs_plot/server_main_500rounds_50clients_fedavg.log',
+  'logs_plot_custom/server_main_500rounds_2clients_fedavg.log',
+  'logs_plot_custom/server_main_500rounds_5clients_fedavg.log',
+  'logs_plot_custom/server_main_500rounds_10clients_fedavg.log',
+  'logs_plot_custom/server_main_500rounds_15clients_fedavg.log',
+  'logs_plot_custom/server_main_500rounds_25clients_fedavg.log',
+  'logs_plot_custom/server_main_500rounds_50clients_fedavg.log',
 ]
 labels = [
   '2 clientes',
@@ -47,5 +47,5 @@ plt.xlim (0, 501)
 plt.gcf().set_size_inches(12, 6)  # Adjust the figure size (width, height) to fit the legend
 plt.tight_layout()
 #plt.show()
-plt.savefig ('server_accuracy_fedavg-noniid_500rounds_mobilenetv2.pdf')
+plt.savefig ('server_accuracy_fedavg-noniid_500rounds_custom.pdf')
 print ('saved')
