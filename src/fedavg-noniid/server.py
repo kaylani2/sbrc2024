@@ -11,14 +11,12 @@ from loaders import load_compiled_model, load_dataset
 if (len(sys.argv) > 4):
   num_clients = int(argv[1])
   num_rounds = int(argv[2])
-  model = str(argv[3])
-  dataset = str(argv[4])
+  MODEL = str(argv[3])
+  DATASET = str(argv[4])
 else:
-  print ("Usage: python server.py num_clients num_rounds")
+  print ("Usage: python server.py num_clients num_rounds model dataset")
   sys.exit()
 
-MODEL='custom_cifar10'
-DATASET='cifar10'
 RESIZE=True
 MIN_FIT_CLIENTS=num_clients
 MIN_AVAILABLE_CLIENTS=num_clients

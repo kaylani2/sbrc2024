@@ -11,18 +11,16 @@ from loaders import load_compiled_model, load_dataset
 if (len(sys.argv) > 4):
   num_clients = int(argv[1])
   client_index = int(argv[2])
-  model = str(argv[3])
-  dataset = str(argv[4])
+  MODEL = str(argv[3])
+  DATASET = str(argv[4])
   print("num_clients:", num_clients)
   print("client_index:", client_index)
-  print("model:", model)
-  print("dataset:", dataset)
+  print("model:", MODEL)
+  print("dataset:", DATASET)
 else:
-  print ("Usage: python client.py num_clients client_index")
+  print ("Usage: python client.py num_clients client_index model dataset")
   sys.exit()
 
-MODEL='custom_cifar10'
-DATASET='cifar10'
 RESIZE=True
 LEARNING_RATE=1e-2
 NUM_EPOCHS=1
