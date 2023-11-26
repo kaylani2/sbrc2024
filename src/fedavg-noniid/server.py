@@ -73,8 +73,10 @@ class SaveModelStrategy(fl.server.strategy.FedAvg):
       aggregated_ndarrays: List[np.ndarray] = fl.common.parameters_to_ndarrays(aggregated_parameters)
       # Save aggregated_ndarrays
       print(f"Saving round {server_round} aggregated_ndarrays...")
-      model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.npz")
-      np.savez(f"model_round-{server_round}-{num_clients}clients-weights.npz", *aggregated_ndarrays)
+      #model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.npz")
+      #np.savez(f"model_round-{server_round}-{num_clients}clients-weights.npz", *aggregated_ndarrays)
+      model_filename=("model_round-"+str(server_round).zfill(len(str(num_rounds)))+"-"+str(num_clients)+"clients"+str(num_rounds)+"rounds-weights.h5")
+      model.save_weights(model_filename)
 
     return aggregated_parameters, aggregated_metrics
 
