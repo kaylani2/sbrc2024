@@ -81,6 +81,11 @@ def load_compiled_model (model='MobileNetV2'):
       metrics=["accuracy"])
 
 
+  try:
+    model.load_weights('weights.h5')
+    print('Loaded weights!!!!!!!!')
+  except:
+    print('Failed to load weights!!!!!!!!')
   print(model.summary())
   return model
 

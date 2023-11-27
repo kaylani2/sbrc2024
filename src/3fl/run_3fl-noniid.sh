@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -u num_clients=2
+declare -u num_clients=12
 declare -u num_rounds=500
 model="custom"
 dataset="mnist"
