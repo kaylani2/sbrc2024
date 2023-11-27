@@ -8,63 +8,61 @@ plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 
 RODADAS = 500
-TOTAL_CLIENTES = 50
-CLIENTES_RAPIDOS = 10
-CLIENTES_LENTOS = TOTAL_CLIENTES - CLIENTES_RAPIDOS
-TEMPOS_CLIENTES_LENTOS = [63, 68, 72]
-TEMPOS_CLIENTES_RAPIDOS = [27, 23, 21]
+TOTAL_CLIENTES = 25
+TEMPOS_CLIENTES_LENTOS = [55, 68, 72]
+TEMPOS_CLIENTES_RAPIDOS = [27, 23, 19]
 
 #TAMANHO_CNN_MNIST = 1.53 # <MB>
 #L_ts = [53.2*(10**6), 51.8*(10**6), 94.0*(10**6)]  # <Mb> * [<b/s>] ### K: Velocidades medidas com o iPerf.
 #L_ts = [TAMANHO_MODELO / x for x in L_ts] # [<b/s>] / b = <s>
 
 
-
-clientes_rapidos = 12 ### 25%
+clientes_rapidos = 6 ### 25%
+clientes_lentos = TOTAL_CLIENTES - clientes_rapidos
 x = [*range (1, 501)]; y1 = []; latencia_total = 0
 for rodada in range (RODADAS):
   if (rodada < 250):
     latencia_rodada = random.choice (TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
   else:
-    latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * CLIENTES_LENTOS + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
+    latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * clientes_lentos + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
   latencia_total += latencia_rodada
   y1.append (latencia_total)
 plt.plot(x, y1, 'r-', markersize=6, label='Clientes mais rápidos primeiro (25%)')
 
-clientes_rapidos = 25 ### 50%
-x = [*range (1, 501)]; y1 = []; latencia_total = 0
-for rodada in range (RODADAS):
-  if (rodada < 250):
-    latencia_rodada = random.choice (TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
-  else:
-    latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * CLIENTES_LENTOS + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
-  latencia_total += latencia_rodada
-  y1.append (latencia_total)
-plt.plot(x, y1, 'b-', markersize=6, label='Clientes mais rápidos primeiro (50%)')
-
-clientes_rapidos = 37 ### 75%
-x = [*range (1, 501)]; y1 = []; latencia_total = 0
-for rodada in range (RODADAS):
-  if (rodada < 250):
-    latencia_rodada = random.choice (TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
-  else:
-    latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * CLIENTES_LENTOS + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
-  latencia_total += latencia_rodada
-  y1.append (latencia_total)
-plt.plot(x, y1, 'g-', markersize=6, label='Clientes mais rápidos primeiro (75%)')
-
-
-
+clientes_rapidos = 12 ### 50%
 x = [*range (1, 501)]; y2 = []; latencia_total = 0
 for rodada in range (RODADAS):
-  latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * CLIENTES_LENTOS + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
+  if (rodada < 250):
+    latencia_rodada = random.choice (TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
+  else:
+    latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * clientes_lentos + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
   latencia_total += latencia_rodada
   y2.append (latencia_total)
-plt.plot(x, y2, 'k-', markersize=6, label='Latência convencional')
+plt.plot(x, y2, 'b-', markersize=6, label='Clientes mais rápidos primeiro (50%)')
+
+clientes_rapidos = 19 ### 75%
+x = [*range (1, 501)]; y3 = []; latencia_total = 0
+for rodada in range (RODADAS):
+  if (rodada < 250):
+    latencia_rodada = random.choice (TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
+  else:
+    latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS * clientes_lentos + TEMPOS_CLIENTES_RAPIDOS * clientes_rapidos)
+  latencia_total += latencia_rodada
+  y3.append (latencia_total)
+plt.plot(x, y3, 'g-', markersize=6, label='Clientes mais rápidos primeiro (75%)')
 
 
-for var in (y1[-1], y2[-1]):
-    plt.annotate('%0.2f' % int(var), xy=(1, int(var)), xytext=(8, 0), 
+
+x = [*range (1, 501)]; y4 = []; latencia_total = 0
+for rodada in range (RODADAS):
+  latencia_rodada = random.choice (TEMPOS_CLIENTES_LENTOS)
+  latencia_total += latencia_rodada
+  y4.append (latencia_total)
+plt.plot(x, y4, 'k-', markersize=6, label='Latência convencional')
+
+
+for var in (y1[-1], y2[-1], y3[-1], y4[-1]):
+    plt.annotate('%0.0f' % int(var), xy=(1, int(var)), xytext=(8, 0), 
                  xycoords=('axes fraction', 'data'), textcoords='offset points')
 
 
@@ -77,8 +75,7 @@ plt.gcf().set_size_inches(10, 7)  # Adjust the figure size (width, height) to fi
 plt.xlabel ('Rodada')
 plt.ylabel ('Latência total em segundos')
 plt.xlim (0, 502)
-#plt.ylim (0, 500)
 plt.tight_layout()
-plt.show()
-#plt.savefig ('unified_monte_carlo.pdf')
+#plt.show()
+plt.savefig ('latencia_3fl.pdf')
 print ('saved')
