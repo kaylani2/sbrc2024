@@ -73,7 +73,7 @@ if (client_index <= 6):
   datagen.fit(x_train)
 
   # Generate augmented samples and append to x_train and y_train
-  augmented_samples = 1000  # Number of augmented samples to generate
+  augmented_samples = len(x_train)  # Number of augmented samples to generate
   augmented_x = []
   augmented_y = []
 
