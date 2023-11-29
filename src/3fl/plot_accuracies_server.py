@@ -59,6 +59,6 @@ plt.legend (loc='lower right', ncol=1, frameon=False, markerfirst=True, labelcol
 plt.xlim (0, 501)
 plt.gcf().set_size_inches(12, 6)  # Adjust the figure size (width, height) to fit the legend
 plt.tight_layout()
-plt.show()
-#plt.savefig ('server_accuracy_3fl_500rounds_custom_mnist.pdf')
-#print ('saved')
+#plt.show()
+plt.savefig ('server_accuracy_3fl_500rounds_custom_mnist.pdf')
+print ('saved')
