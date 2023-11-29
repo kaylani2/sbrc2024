@@ -21,6 +21,8 @@ labels = [
   'Clientes mais rápidos primeiro (75%)',
 ]
 
+all_clients = 'logs_plot/25-25-25.log'
+
 for first_logfile, second_logfile, label in zip(first_logfiles, second_logfiles, labels):
   # Read the log file
   with open(first_logfile, 'r') as file:
@@ -51,6 +53,24 @@ for first_logfile, second_logfile, label in zip(first_logfiles, second_logfiles,
   accuracy_list = accuracy_list1[:250] + accuracy_list2[:250]
   x = list(range(1, len(accuracy_list)+ 1))
   plt.plot(x, accuracy_list, label=label, marker='', alpha=0.8)
+
+
+### Plot all 25 clients (regular fedavg)
+with open(all_clients, 'r') as file:
+  log_content = file.read()
+
+# Regular expression pattern to match accuracy values
+accuracy_pattern = r"'accuracy': (\d+\.\d+)"
+
+# Find all accuracy values in the log content
+accuracy_values = re.findall(accuracy_pattern, log_content)
+
+# Convert the accuracy values to floats and store in a list
+accuracy_list = [float(value) for value in accuracy_values]
+
+x = list(range(1, len(accuracy_list)+ 1))
+plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', marker='.', color='k', alpha=0.3)
+
 
 plt.xlabel("Rodada")
 plt.ylabel("Acurácia")
