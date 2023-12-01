@@ -96,7 +96,8 @@ clients =[
   {'index': 13, 'num_samples': 0.0, 'speed': 0.0, 'final_num_samples': 2252}
 ]
 
-
+for client in clients:
+  client['final_num_samples'] = client ['final_num_samples']*(client['num_samples']+1)
 
 # Extracting num_samples and speed values
 num_samples = [client['num_samples'] for client in clients]

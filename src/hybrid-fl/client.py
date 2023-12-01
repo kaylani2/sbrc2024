@@ -7,6 +7,8 @@ from keras.optimizers import Adam
 from flwr.common.logger import log
 from logging import INFO, DEBUG
 from loaders import load_compiled_model, load_dataset
+from keras.preprocessing.image import ImageDataGenerator
+from scipy import ndimage
 
 if (len(sys.argv) > 4):
   num_clients = int(argv[1])
@@ -58,6 +60,69 @@ elif (client_index <= 20):
   x_train, y_train = x_train [3*len(x_train)//5 : 4*len(x_train)//5], y_train [3*len(y_train)//5 : 4*len(y_train)//5]
 else:
   x_train, y_train = x_train [4*len(x_train)//5:], y_train [4*len(y_train)//5:]
+
+
+final_data_samples=[### As told by the randomizer
+  4417.070837166513,
+  4024.6274149034034,
+  3574.816927322907,
+  5066.0,
+  3712.114995400184,
+  3585.1154553817846,
+  3051.698252069917,
+  2432.2428702851885,
+  4824.938362465501,
+  4801.514719411223,
+  3720.8758049678013,
+  4008.0827966881325,
+  4566.157773689052,
+  4240.311867525299,
+  3712.2184912603493,
+  3622.502299908004,
+  3560.6255749770007,
+  3578.8054277828883,
+  3543.228610855566,
+  3259.9264029438823,
+  3875.862005519779,
+  2996.136154553818,
+  3571.48114075437,
+  3609.179392824287,
+  2252.0,
+]
+
+### Augment accordingly to the randomizer
+# Create an ImageDataGenerator for augmentation
+datagen = ImageDataGenerator(
+    rotation_range=10,  # Rotate images by up to 10 degrees
+    width_shift_range=0.1,  # Shift images horizontally by 10% of the width
+    height_shift_range=0.1,  # Shift images vertically by 10% of the height
+    zoom_range=0.1  # Zoom in/out by 10%
+)
+# Fit the ImageDataGenerator to the data
+datagen.fit(x_train)
+
+# Generate augmented samples and append to x_train and y_train
+augmented_samples = int(final_data_samples[client_index-1]) - len(x_train)  # Number of augmented samples to generate
+augmented_x = []
+augmented_y = []
+
+for x_batch, y_batch in datagen.flow(x_train, y_train, batch_size=1):
+    augmented_x.append(x_batch)
+    augmented_y.append(y_batch)
+    if len(augmented_x) >= augmented_samples:
+        break
+
+# Convert lists to numpy arrays and concatenate with original data
+augmented_x = np.array(augmented_x).reshape(-1, 32, 32, 1)
+augmented_y = np.array(augmented_y).reshape(-1)
+x_train = np.concatenate((x_train, augmented_x), axis=0)
+y_train = np.concatenate((y_train, augmented_y), axis=0)
+# Check the shape of augmented data
+print("New x_train shape:", x_train.shape)
+del augmented_x
+del augmented_y
+#print("Augmented x_train shape:", x_train_augmented.shape)
+
 
 print (f"client_index: {client_index}")
 print (f"samples: {samples}")
