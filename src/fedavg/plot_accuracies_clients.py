@@ -48,7 +48,7 @@ for log_group, config in zip (log_groups, configs):
   mean_values = np.mean(accuracies, axis=0)
   std_dev = np.std(accuracies, axis=0)
   # Plot
-  plt.plot(np.arange(len(mean_values)), mean_values, label=config['label1'], color=config['color'])
+  plt.plot(np.arange(len(mean_values)), mean_values, label=config['label1'], markersize=10.0, color=config['color'], linewidth=3.0)
   plt.fill_between(np.arange(len(mean_values)), mean_values - std_dev, mean_values + std_dev, color=config['color'], alpha=0.2, label=config['label2'])
 
 
@@ -58,6 +58,6 @@ plt.legend(loc='center right', ncol=1, frameon=False, markerfirst=True, labelcol
 plt.gcf().set_size_inches(10, 7)  # Adjust the figure size (width, height) to fit the legend
 plt.xlim (0, 101)
 plt.tight_layout()
-#plt.show()
-plt.savefig ('client_accuracy_fedavg_100rounds.pdf')
-print ('saved')
+plt.show()
+#plt.savefig ('client_accuracy_fedavg_100rounds.pdf')
+#print ('saved')
