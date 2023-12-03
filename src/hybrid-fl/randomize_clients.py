@@ -3,8 +3,8 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import math
 CLIENTS_TO_INCLUDE=[6,12,19, 25]
-plt.rc('xtick', labelsize=18)
-plt.rc('ytick', labelsize=18)
+plt.rc('xtick', labelsize=28)
+plt.rc('ytick', labelsize=28)
 
 #samples = {
 #  '0': 5923,
@@ -120,7 +120,7 @@ for oregon in CLIENTS_TO_INCLUDE:
   furthest_indices = sorted(range(len(distances)), key=lambda i: distances[i], reverse=True)[:oregon]
 
   # Create the scatter plot
-  plt.figure(figsize=(9, 8))
+  plt.figure(figsize=(12, 6))
   for i, (x, y) in enumerate(zip(num_samples, speed)):
       if i in furthest_indices:
           plt.scatter(x, y, color='red', s=200, edgecolors='black')  # Highlight furthest points
@@ -129,8 +129,8 @@ for oregon in CLIENTS_TO_INCLUDE:
 
 
   # Adding labels and title
-  plt.xlabel('Velocidade de processamento normalizada', fontsize=24)
-  plt.ylabel('Número de amostras normalizado', fontsize=24)
+  plt.xlabel('Velocidade de processamento normalizada', fontsize=28)
+  plt.ylabel('Número de amostras normalizado', fontsize=28)
   #plt.title('Scatter Plot of num_samples vs speed')
 
   #plt.grid(True)
