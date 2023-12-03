@@ -5,6 +5,8 @@ plt.rcParams.update({'font.size': 16})
 plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 
+filename = 'server_accuracy_fedavg-noniid_500rounds_custom.pdf'
+
 logfiles = [
   'logs_plot_custom/server_main_500rounds_2clients_fedavg.log',
   'logs_plot_custom/server_main_500rounds_5clients_fedavg.log',
@@ -13,6 +15,20 @@ logfiles = [
   'logs_plot_custom/server_main_500rounds_25clients_fedavg.log',
   'logs_plot_custom/server_main_500rounds_50clients_fedavg.log',
 ]
+
+
+
+#### plotting mobilenet
+#filename = 'server_accuracy_fedavg-noniid_500rounds_mobilenetv2.pdf'
+#logfiles = [
+#  'mobilenetv2_logs/server_main_500rounds_2clients_fedavg.log',
+#  'mobilenetv2_logs/server_main_500rounds_5clients_fedavg.log',
+#  'mobilenetv2_logs/server_main_500rounds_10clients_fedavg.log',
+#  'mobilenetv2_logs/server_main_500rounds_15clients_fedavg.log',
+#  'mobilenetv2_logs/server_main_500rounds_25clients_fedavg.log',
+#  'mobilenetv2_logs/server_main_500rounds_50clients_fedavg.log',
+#]
+
 labels = [
   '2 clientes',
   '5 clientes',
@@ -22,7 +38,18 @@ labels = [
   '50 clientes',
 ]
 
-for logfile, label in zip(logfiles, labels):
+colors = [
+  'cyan',
+  'blue',
+  'red',
+  'green',
+  'black',
+  'purple',
+]
+
+
+
+for logfile, label, color in zip(logfiles, labels, colors):
   # Read the log file
   with open(logfile, 'r') as file:
     log_content = file.read()
@@ -37,15 +64,23 @@ for logfile, label in zip(logfiles, labels):
   accuracy_list = [float(value) for value in accuracy_values]
 
   x = list(range(1, len(accuracy_list)+ 1))
-  plt.plot(x, accuracy_list, label=label, marker='', alpha=0.8)
+  plt.plot(x, accuracy_list, label=label,
+           #marker=marker, 
+           #markersize=7.0, 
+           linestyle='solid',#ls,
+           alpha=0.8,
+           linewidth=1.5,
+           color=color)
 
-plt.xlabel("Rodada")
-plt.ylabel("Acurácia")
+plt.xlabel("Rodada", fontsize=20)
+plt.ylabel("Acurácia", fontsize=20)
 
-plt.legend (loc='lower right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
+#plt.legend (loc='upper left', bbox_to_anchor=(0,-0.09,1,1), ncol=1, frameon=False, markerfirst=True, labelcolor='black') ### mobilnetv2
+plt.legend (loc='upper left', bbox_to_anchor=(0,-0.09,1,1), ncol=1, frameon=False, markerfirst=True, labelcolor='black')
+
 plt.xlim (0, 501)
-plt.gcf().set_size_inches(12, 6)  # Adjust the figure size (width, height) to fit the legend
+plt.gcf().set_size_inches(12, 6)
 plt.tight_layout()
 #plt.show()
-plt.savefig ('server_accuracy_fedavg-noniid_500rounds_custom.pdf')
+plt.savefig (filename)
 print ('saved')

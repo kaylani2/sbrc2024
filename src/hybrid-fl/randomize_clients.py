@@ -2,7 +2,9 @@ import random
 from collections import Counter
 import matplotlib.pyplot as plt
 import math
-CLIENTS_TO_INCLUDE=[6,12,19]
+CLIENTS_TO_INCLUDE=[6,12,19, 25]
+plt.rc('xtick', labelsize=18)
+plt.rc('ytick', labelsize=18)
 
 #samples = {
 #  '0': 5923,
@@ -118,21 +120,24 @@ for oregon in CLIENTS_TO_INCLUDE:
   furthest_indices = sorted(range(len(distances)), key=lambda i: distances[i], reverse=True)[:oregon]
 
   # Create the scatter plot
-  plt.figure(figsize=(8, 6))
+  plt.figure(figsize=(9, 8))
   for i, (x, y) in enumerate(zip(num_samples, speed)):
       if i in furthest_indices:
-          plt.scatter(x, y, color='red', s=100, edgecolors='black')  # Highlight furthest points
+          plt.scatter(x, y, color='red', s=200, edgecolors='black')  # Highlight furthest points
       else:
-          plt.scatter(x, y, color='blue', s=50, alpha=0.7, edgecolors='black')  # Other points
+          plt.scatter(x, y, color='blue', s=100, alpha=0.7, edgecolors='black')  # Other points
 
 
   # Adding labels and title
-  plt.xlabel('Velocidade de processamento normalizado')
-  plt.ylabel('Número de amostras normalizado')
+  plt.xlabel('Velocidade de processamento normalizada', fontsize=24)
+  plt.ylabel('Número de amostras normalizado', fontsize=24)
   #plt.title('Scatter Plot of num_samples vs speed')
 
   #plt.grid(True)
+  plt.tight_layout()
   #plt.show()
+  #import sys
+  #sys.exit()
   filename = 'random_clients_with_'+str(oregon)+'_furthests.pdf'
   plt.savefig(filename)
   print('saved')

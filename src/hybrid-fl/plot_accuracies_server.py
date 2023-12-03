@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 plt.rcParams.update({'font.size': 16})
 plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
-filename='server_accuracy_dofl_500rounds_custom_mnist.pdf'
+filename='server_accuracy_hybridfl_500rounds_custom_mnist.pdf'
 first_logfiles = [
   'logs_plot/6-6-25.log',
   'logs_plot/12-12-25.log',
@@ -16,15 +16,17 @@ second_logfiles = [
   'logs_plot/19-25-25.log',
 ]
 labels = [
-  'Clientes com mais dados primeiro (25%)',
-  'Clientes com mais dados primeiro (50%)',
-  'Clientes com mais dados primeiro (75%)',
+  'Clientes de interesse primeiro (25%)',
+  'Clientes de interesse primeiro (50%)',
+  'Clientes de interesse primeiro (75%)',
 ]
+
 colors = [
   'blue',
   'red',
   'green',
 ]
+
 
 all_clients = 'logs_plot/25-25-25.log'
 
@@ -68,6 +70,7 @@ for first_logfile, second_logfile, label, color in zip(first_logfiles, second_lo
            linewidth=1.5,
            )
 
+
 ### Plot all 25 clients (regular fedavg)
 with open(all_clients, 'r') as file:
   log_content = file.read()
@@ -87,6 +90,7 @@ plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', linestyle='dashed', col
 
 plt.xlabel("Rodada", fontsize=20)
 plt.ylabel("Acurácia", fontsize=20)
+
 plt.legend (loc='lower right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
 plt.xlim (0, 501)
 plt.gcf().set_size_inches(12, 6)

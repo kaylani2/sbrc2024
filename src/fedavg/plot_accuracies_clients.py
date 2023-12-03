@@ -20,7 +20,7 @@ configs = [
   {'label1': 'Média 5 clientes', 'label2': 'Desvio padrão 5 clientes', 'color': 'blue',},
   {'label1': 'Média 10 clientes', 'label2': 'Desvio padrão 10 clientes', 'color': 'red',},
   {'label1': 'Média 15 clientes', 'label2': 'Desvio padrão 15 clientes', 'color': 'green',},
-  {'label1': 'Média 25 clientes', 'label2': 'Desvio padrão 25 clientes', 'color': 'pink',},
+  {'label1': 'Média 25 clientes', 'label2': 'Desvio padrão 25 clientes', 'color': 'black',},
   {'label1': 'Média 50 clientes', 'label2': 'Desvio padrão 50 clientes', 'color': 'purple',},
 ]
 
@@ -52,12 +52,12 @@ for log_group, config in zip (log_groups, configs):
   plt.fill_between(np.arange(len(mean_values)), mean_values - std_dev, mean_values + std_dev, color=config['color'], alpha=0.2, label=config['label2'])
 
 
-plt.xlabel("Rodada")
-plt.ylabel("Acurácia")
+plt.xlabel("Rodada", fontsize=20)
+plt.ylabel("Acurácia", fontsize=20)
 plt.legend(loc='center right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
-plt.gcf().set_size_inches(10, 7)  # Adjust the figure size (width, height) to fit the legend
+plt.gcf().set_size_inches(12, 6)
 plt.xlim (0, 101)
 plt.tight_layout()
-plt.show()
-#plt.savefig ('client_accuracy_fedavg_100rounds.pdf')
-#print ('saved')
+#plt.show()
+plt.savefig ('client_accuracy_fedavg_100rounds.pdf')
+print ('saved')
