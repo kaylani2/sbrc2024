@@ -83,9 +83,21 @@ if (client_index <= 19):
       if len(augmented_x) >= augmented_samples:
           break
 
-  # Convert lists to numpy arrays and concatenate with original data
-  augmented_x = np.array(augmented_x).reshape(-1, 32, 32, 1)
-  augmented_y = np.array(augmented_y).reshape(-1)
+  if (DATASET == 'mnist'):
+    # Convert lists to numpy arrays and concatenate with original data
+    augmented_x = np.array(augmented_x).reshape(-1, 32, 32, 1)
+    augmented_y = np.array(augmented_y).reshape(-1)
+
+  elif (DATASET == 'cifar10'):
+    # Convert lists to numpy arrays and concatenate with original data
+    augmented_x = np.array(augmented_x)
+    augmented_y = np.array(augmented_y)
+    # Reshape augmented_x to match CIFAR-10 image shape
+    augmented_x = augmented_x.reshape(-1, 32, 32, 3)
+    augmented_y = augmented_y.reshape(-1)
+    
+  x_train = np.concatenate((x_train, augmented_x), axis=0)
+
   x_train = np.concatenate((x_train, augmented_x), axis=0)
   y_train = np.concatenate((y_train, augmented_y), axis=0)
   # Check the shape of augmented data
