@@ -67,6 +67,7 @@ for first_logfile, second_logfile, label, color in zip(first_logfiles, second_lo
   plt.plot(x, accuracy_list, 
            label=label, marker='', alpha=0.8,
            color=color,
+           linestyle='dashed',
            linewidth=1.5,
            )
 
@@ -85,11 +86,21 @@ accuracy_values = re.findall(accuracy_pattern, log_content)
 accuracy_list = [float(value) for value in accuracy_values]
 
 x = list(range(1, len(accuracy_list)+ 1))
-plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', linestyle='dashed', color='black', alpha=0.8)
+plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', linestyle='solid', color='black', alpha=0.8)
 
 
 plt.xlabel("Rodada", fontsize=20)
 plt.ylabel("Acurácia", fontsize=20)
+
+
+### K: Plotando o 250 pra ficar mais claro.
+# Get the current x-axis ticks
+existing_xticks = plt.gca().get_xticks().tolist()
+# Add the specific x-axis value you want to display
+desired_xtick = 250
+all_xticks = existing_xticks + [desired_xtick]
+# Set the x-axis ticks
+plt.xticks(all_xticks)
 
 plt.legend (loc='lower right', ncol=1, frameon=False, markerfirst=True, labelcolor='black')
 plt.xlim (0, 501)
