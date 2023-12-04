@@ -97,8 +97,6 @@ if (client_index <= 12):
     augmented_y = augmented_y.reshape(-1)
     
   x_train = np.concatenate((x_train, augmented_x), axis=0)
-
-  x_train = np.concatenate((x_train, augmented_x), axis=0)
   y_train = np.concatenate((y_train, augmented_y), axis=0)
   # Check the shape of augmented data
   print("New x_train shape:", x_train.shape)
