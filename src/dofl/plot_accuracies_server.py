@@ -86,6 +86,9 @@ x = list(range(1, len(accuracy_list)+ 1))
 plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', linestyle='solid', color='black', alpha=0.8)
 
 
+#plt.text(5.0, 0.07, 'Clientes mais rápidos apenas', fontsize=16, color='black')
+#plt.text(400.0, 0.77, 'Todos os clientes', fontsize=16, color='black')
+plt.axvline(x=250, color='black', linestyle='dotted', linewidth=3.0)#, label='Rodada 250')
 plt.xlabel("Rodada", fontsize=20)
 plt.ylabel("Acurácia", fontsize=20)
 
