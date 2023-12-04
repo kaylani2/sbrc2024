@@ -23,12 +23,12 @@ acc1, acc2, acc3, acc4, acc5, acc6 = [accuracies[i:i + 10] for i in range(0, len
 
 
 x = list(range(1, 11))
-plt.plot(x, acc1, label=r'B_c=64, $\eta$=1e-2')
-plt.plot(x, acc2, label=r'B_c=128, $\eta$=1e-4')
-plt.plot(x, acc3, label=r'B_c=256, $\eta$=1e-2')
-plt.plot(x, acc4, label=r'B_c=64, $\eta$=1e-4')
-plt.plot(x, acc5, label=r'B_c=128, $\eta$=1e-2')
-plt.plot(x, acc6, label=r'B_c=256, $\eta$=1e-4')
+plt.plot(x, acc1, label=r'$B_c$=64, $\eta$=1e-2')
+plt.plot(x, acc2, label=r'$B_c$=128, $\eta$=1e-4')
+plt.plot(x, acc3, label=r'$B_c$=256, $\eta$=1e-2')
+plt.plot(x, acc4, label=r'$B_c$=64, $\eta$=1e-4')
+plt.plot(x, acc5, label=r'$B_c$=128, $\eta$=1e-2')
+plt.plot(x, acc6, label=r'$B_c$=256, $\eta$=1e-4')
 
 
 plt.xlabel("Época")

@@ -33,9 +33,10 @@ for batch_size in batch_sizes:
     try:
       model = load_model ('mobilenetv2_mnist.keras')
     except:
-      model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
+    model = tf.keras.applications.MobileNetV2((32,32,1), classes=10, weights=None)
     optimizer = Adam(learning_rate = learning_rate)
     model.compile (loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=METRICS)
+    print ('Running...')
     history = model.fit (x_train, y_train, epochs=NUM_EPOCHS, batch_size=batch_size, validation_split=0.2, verbose=2, workers=1, use_multiprocessing=True)
     #model.save('mobilenetv2_mnist.keras') ### K: Don't save model to generate four examples trained from scratch.
 
