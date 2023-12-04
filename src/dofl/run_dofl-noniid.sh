@@ -1,9 +1,9 @@
 #!/bin/bash
 
-declare -u num_clients=7
+declare -u num_clients=6
 declare -u num_rounds=500
-model="custom"
-dataset="mnist"
+model="custom_cifar10"
+dataset="cifar10"
 
 python server.py $num_clients $num_rounds $model $dataset > server-$num_rounds-rounds-$num_clients-clients.bash.log 2>&1 &
 sleep 5
