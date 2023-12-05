@@ -5,7 +5,7 @@ plt.rcParams.update({'font.size': 16})
 plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 
-filename='server_accuracy_poc_500rounds_custom_mnist.pdf'
+filename='C:/Users/kayla/Documents/mestrado/src/poc/server_accuracy_poc_500rounds_custom_mnist.pdf'
 
 all_clients =  'C:/Users/kayla/Documents/mestrado/src/poc/25-25-25.log'
 
@@ -65,21 +65,21 @@ for first_logfile, second_logfile, label, color in zip(first_logfiles, second_lo
            )
 
 
-### Plot all 25 clients (regular fedavg)
-with open(all_clients, 'r') as file:
-  log_content = file.read()
-
-# Regular expression pattern to match accuracy values
-accuracy_pattern = r"'accuracy': (\d+\.\d+)"
-
-# Find all accuracy values in the log content
-accuracy_values = re.findall(accuracy_pattern, log_content)
-
-# Convert the accuracy values to floats and store in a list
-accuracy_list = [float(value) for value in accuracy_values]
-
-x = list(range(1, len(accuracy_list)+ 1))
-plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', linestyle='solid', color='black', alpha=0.8)
+#### Plot all 25 clients (regular fedavg)
+#with open(all_clients, 'r') as file:
+#  log_content = file.read()
+#
+## Regular expression pattern to match accuracy values
+#accuracy_pattern = r"'accuracy': (\d+\.\d+)"
+#
+## Find all accuracy values in the log content
+#accuracy_values = re.findall(accuracy_pattern, log_content)
+#
+## Convert the accuracy values to floats and store in a list
+#accuracy_list = [float(value) for value in accuracy_values]
+#
+#x = list(range(1, len(accuracy_list)+ 1))
+#plt.plot(x, accuracy_list, label='FedAVG (25 clientes)', linestyle='solid', color='black', alpha=0.8)
 
 
 plt.axvline(x=250, color='black', linestyle='dotted', linewidth=3.0)#, label='Rodada 250')

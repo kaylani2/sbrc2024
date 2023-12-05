@@ -42,6 +42,7 @@ while rodada < RODADAS + 1:
     rodada -=1
   rodada +=1
   y1.append (latencia_total)
+y1[0] = 1+2+4+8+16+32
 x = [*range (1, len(y1)+1)]
 plt.plot(x, y1, 'b-', markersize=6, label='Clientes mais rápidos primeiro (25%)', linestyle='dashed')
 
@@ -59,6 +60,7 @@ while rodada < RODADAS + 1:
     rodada -=1
   rodada +=1
   y2.append (latencia_total)
+y2[0] = 1+2+4+8+16+32
 x = [*range (1, len(y2)+1)]
 plt.plot(x, y2, 'r-', markersize=6, label='Clientes mais rápidos primeiro (50%)', linestyle='dashed')
 
@@ -77,6 +79,7 @@ while rodada < RODADAS + 1:
     rodada -=1
   rodada +=1
   y3.append (latencia_total)
+y3[0] = 1+2+4+8+16+32
 x = [*range (1, len(y3)+1)]
 plt.plot(x, y3, 'g-', markersize=6, label='Clientes mais rápidos primeiro (75%)', linestyle='dashed')
 
@@ -96,7 +99,7 @@ x = [*range (1, len(y4)+1)]
 plt.plot(x, y4, 'k-', markersize=6, label='Latência convencional')
 
 
-offsets = [20, 0, -20, 0]  # Adjust these offsets for appropriate spacing
+offsets = [15, 0, -20, 0]  # Adjust these offsets for appropriate spacing
 for i, var in enumerate((y1[-1], y2[-1], y3[-1], y4[-1])):
     plt.annotate('%0.0f' % int(var), xy=(1, int(var)), xytext=(8, offsets[i]),  xycoords=('axes fraction', 'data'), textcoords='offset points')
 
@@ -107,5 +110,5 @@ plt.ylabel("Latência total em segundos", fontsize=20)
 plt.xlim (0, max(len(y1), len(y2), len(y3), len(y4)))
 plt.tight_layout()
 #plt.show()
-plt.savefig ('latencia_3fl.pdf')
+plt.savefig ('C:/Users/kayla/Documents/mestrado/src/3fl/latencia_3fl.pdf')
 print ('saved')
