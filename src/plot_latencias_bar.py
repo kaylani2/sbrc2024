@@ -14,9 +14,9 @@ DOFL_12 = [34061]
 DOFL_19 = [37069]
 
 
-hybrid_6  = [30000]
-hybrid_12 = [30000]
-hybrid_19 = [30000]
+hybrid_6  = [28325]
+hybrid_12 = [34894]
+hybrid_19 = [35887]
 
 # All data lists grouped together
 data = [FedAVG, THREE_FL_6, THREE_FL_12, THREE_FL_19, DOFL_6, DOFL_12, DOFL_19, hybrid_6, hybrid_12, hybrid_19]
