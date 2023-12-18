@@ -129,8 +129,8 @@ for oregon in CLIENTS_TO_INCLUDE:
 
 
   # Adding labels and title
-  plt.xlabel('Velocidade de processamento normalizada', fontsize=28)
-  plt.ylabel('Número de amostras normalizado', fontsize=28)
+  plt.ylabel('Velocidade de processamento\nnormalizada', fontsize=28)
+  plt.xlabel('Número de amostras normalizado', fontsize=28)
   #plt.title('Scatter Plot of num_samples vs speed')
 
   #plt.grid(True)
