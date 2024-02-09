@@ -1,4 +1,4 @@
-# mestrado
+# sbrc2024
 
 - Run `new_install.sh` to install and setup pyenv. Follow the echoed instructions to setup a virtual environment and install requirements.
 
@@ -15,3 +15,7 @@
 - CTRL+A D (dettach)
 - screen -ls
 - screen -r name (attach)
+
+# BibTex
+
+TBD
